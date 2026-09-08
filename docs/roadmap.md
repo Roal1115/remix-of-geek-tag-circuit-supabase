@@ -56,12 +56,42 @@ Detalle completo en [`architecture.md`](./architecture.md).
 
 ## 5. Criterios de Alpha / Beta / Launch Readiness / rollback
 
-_Pendiente de definir con Dirección General — placeholder a completar en la próxima revisión._
+> Borrador para validar con Dirección General. Un módulo P0 solo se considera "listo" si cumple todo lo de su etapa.
 
-- **Alpha:** ?
-- **Beta:** ?
-- **Launch Readiness:** ?
-- **Rollback:** ?
+### Alpha
+Uso interno + tiendas piloto, sin exposición pública amplia.
+
+- Flujo completo registro → evento → resultado → ranking corre de punta a punta sin intervención manual del equipo técnico.
+- Roles y permisos verificados para admin, tcg-manager, organizador/tienda y jugador.
+- Corrección de resultados solo posible con trazabilidad (quién, cuándo, por qué) y autorización de rol correspondiente.
+- Respaldo de base de datos configurado y una restauración probada al menos una vez.
+- Al menos 1 tienda piloto real corrió un evento completo en la plataforma.
+
+### Beta
+Expansión a más Founding Stores, aún con soporte técnico cercano.
+
+- Todo lo de Alpha, sostenido sin incidentes críticos durante al menos 2 semanas.
+- Standings/desempates/clasificación validados por Operaciones con datos reales de al menos un evento.
+- Dashboards mínimos entregados a CEO, Operaciones, Comercial y Administración.
+- Proceso de soporte e incidencias documentado y en uso (ver sección 6).
+- % de tiendas activadas sin intervención manual ≥ objetivo definido en el scorecard.
+
+### Launch Readiness (arranque oficial de Season 1)
+- Todos los módulos P0 completos y verificados (100%).
+- Cero incidentes críticos abiertos sin plan de mitigación.
+- Rollback probado (ver abajo) al menos una vez en ambiente de staging.
+- Monitoreo básico activo (alertas de caída de flujo crítico).
+- Aceptación explícita de Dirección General sobre alcance y fecha.
+
+### Rollback
+Condiciones que activan un rollback o congelamiento de release:
+
+- Pérdida o corrupción de datos de resultados/standings detectada.
+- Falla que impide a una tienda reportar resultados dentro del plazo operativo.
+- Vulnerabilidad de seguridad activa sin mitigación inmediata.
+- Bug que permite alterar resultados o rankings sin trazabilidad.
+
+Mecanismo: revertir a la última migración/versión estable conocida (ver `supabase/migrations/`), notificar a tiendas afectadas, y no reabrir el flujo hasta que el módulo vuelva a cumplir criterios de su etapa (Alpha/Beta).
 
 ## 6. Proceso de soporte e incidencias
 
