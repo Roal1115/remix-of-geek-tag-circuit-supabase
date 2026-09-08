@@ -95,7 +95,33 @@ Mecanismo: revertir a la última migración/versión estable conocida (ver `supa
 
 ## 6. Proceso de soporte e incidencias
 
-_Pendiente de diseñar._ Debe cubrir: canal de reporte para tiendas/admins, clasificación de severidad, tiempo de respuesta objetivo, escalación.
+> Borrador para validar con Operaciones/Administración.
+
+### Canal de reporte
+
+- **Tiendas / organizadores:** canal único (WhatsApp/Slack de soporte o formulario dentro de la plataforma) — no reportar directo a Rodrigo por mensaje personal, para que quede trazabilidad.
+- **Admins/Comercial/Administración:** mismo canal, marcado con su rol.
+- Todo reporte debe incluir: quién reporta, tienda/torneo afectado, qué esperaba vs. qué pasó, hora aproximada.
+
+### Clasificación de severidad
+
+| Severidad | Definición | Ejemplo | Tiempo de respuesta objetivo |
+|---|---|---|---|
+| **Crítica (S1)** | Bloquea reportar resultados, corrompe datos, o expone datos privados | No se puede cerrar un torneo, standings incorrectos publicados | Respuesta ≤ 30 min, mitigación ≤ 4h |
+| **Alta (S2)** | Afecta a una tienda/torneo pero hay workaround manual | Un jugador no aparece en standings, error en un módulo secundario | Respuesta ≤ 4h, fix en el día |
+| **Media (S3)** | Molesta pero no bloquea operación | Bug visual, texto incorrecto | Respuesta ≤ 1 día hábil |
+| **Baja (S4)** | Mejora/cosmético | Sugerencia de UX | Backlog (P1/Future) |
+
+### Escalación
+
+1. Reporte entra al canal → se clasifica severidad.
+2. S1/S2: Rodrigo (o quien esté de guardia) atiende directo.
+3. Si requiere decisión de alcance/reglas: escala a CEO/Operaciones según el mandato ("no define reglamentos unilateralmente").
+4. Cierre: se documenta causa raíz y fix en el mismo canal, para que quede como historial (auditoría).
+
+### Riesgo conocido
+
+Hoy depende de una sola persona (Rodrigo) para operación/soporte — mismo riesgo que señala el mandato. Mitigación a mediano plazo: definir un segundo responsable de guardia antes de escalar a las 89 Founding Stores.
 
 ## Fecha propuesta de Platform Alpha
 
