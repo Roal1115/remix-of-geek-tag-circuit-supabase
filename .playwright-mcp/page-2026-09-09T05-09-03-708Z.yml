@@ -1,0 +1,73 @@
+- generic [ref=f50e2]:
+  - generic [ref=f50e3]:
+    - banner [ref=f50e4]:
+      - link "Trading Card Nexus" [ref=f50e7] [cursor=pointer]:
+        - /url: /
+        - generic [ref=f50e15]: Trading Card
+        - generic [ref=f50e16]: Nexus
+    - generic [ref=f50e18]:
+      - complementary [ref=f50e19]
+      - main [ref=f50e20]:
+        - link "Volver al directorio" [ref=f50e22] [cursor=pointer]:
+          - /url: /stores
+        - generic [ref=f50e27]:
+          - paragraph [ref=f50e28]: Zona Extendida
+          - heading "Tienda 2" [level=1] [ref=f50e29]
+        - generic [ref=f50e32]:
+          - heading "Ubicación y horario" [level=2] [ref=f50e33]
+          - paragraph [ref=f50e34]: La tienda sigue en proceso de configuración — pronto verás su dirección y horario aquí.
+        - generic [ref=f50e41]:
+          - heading "Calendario de torneos" [level=2] [ref=f50e42]
+          - generic [ref=f50e43]:
+            - button [ref=f50e44]
+            - generic [ref=f50e47]: 7 sep — 13 sep 2026
+            - button [ref=f50e48]
+            - button "Hoy" [ref=f50e51]
+        - table [ref=f50e65]:
+          - rowgroup [ref=f50e66]:
+            - row [ref=f50e67]:
+              - columnheader "#" [ref=f50e68]
+              - columnheader "Tag" [ref=f50e69]
+              - columnheader "Pts" [ref=f50e70]
+              - columnheader "Trn" [ref=f50e71]
+              - columnheader "W" [ref=f50e72]
+              - columnheader "OMW%" [ref=f50e73]
+          - rowgroup [ref=f50e74]:
+            - row [ref=f50e75]:
+              - cell [ref=f50e76]
+              - cell [ref=f50e78]
+              - cell [ref=f50e80]
+              - cell [ref=f50e83]
+              - cell [ref=f50e86]
+              - cell [ref=f50e89]
+            - row [ref=f50e92]:
+              - cell [ref=f50e93]
+              - cell [ref=f50e95]
+              - cell [ref=f50e97]
+              - cell [ref=f50e100]
+              - cell [ref=f50e103]
+              - cell [ref=f50e106]
+            - row [ref=f50e109]:
+              - cell [ref=f50e110]
+              - cell [ref=f50e112]
+              - cell [ref=f50e114]
+              - cell [ref=f50e117]
+              - cell [ref=f50e120]
+              - cell [ref=f50e123]
+            - row [ref=f50e126]:
+              - cell [ref=f50e127]
+              - cell [ref=f50e129]
+              - cell [ref=f50e131]
+              - cell [ref=f50e134]
+              - cell [ref=f50e137]
+              - cell [ref=f50e140]
+            - row [ref=f50e143]:
+              - cell [ref=f50e144]
+              - cell [ref=f50e146]
+              - cell [ref=f50e148]
+              - cell [ref=f50e151]
+              - cell [ref=f50e154]
+              - cell [ref=f50e157]
+        - heading "Historial de torneos" [level=2] [ref=f50e162]
+      - complementary [ref=f50e168]
+  - region "Notifications alt+T"

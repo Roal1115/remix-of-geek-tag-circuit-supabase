@@ -1,4 +1,4 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useMemo, useState } from "react";
 import { useServerFn } from "@tanstack/react-start";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
@@ -67,6 +67,13 @@ export const Route = createFileRoute("/players/$playerTag")({
 function PublicProfilePage() {
   const { playerTag } = Route.useParams();
   const loaderData = Route.useLoaderData();
+  const navigate = useNavigate();
+  // A diferencia del dashboard (donde un torneo lleva al detalle de gestión
+  // interno), en el perfil público lleva al detalle público del torneo
+  // (/tournaments/$id), que a su vez ofrece "Volver" y "Ver tienda".
+  const goToTournament = (tournamentId: string) => {
+    navigate({ to: "/tournaments/$id", params: { id: tournamentId } });
+  };
   const fetchActiveSponsor = useServerFn(getActiveSponsor);
   const registerView = useServerFn(registerAdView);
 
@@ -409,7 +416,8 @@ function PublicProfilePage() {
                     cardData: {
                       geekTag: profile.geek_tag,
                       subtitle: profile.store_city ?? null,
-                      rankLabel: topRanking?.rank_position > 0 ? `#${topRanking.rank_position}` : null,
+                      rankLabel:
+                        topRanking?.rank_position > 0 ? `#${topRanking.rank_position}` : null,
                       rankCaption: topRanking?.game_name ?? null,
                       statsLine: topRanking
                         ? `${Number(topRanking.total_points).toFixed(0)} pts · ${topRanking.tournaments_won} ganados`
@@ -494,38 +502,40 @@ function PublicProfilePage() {
                 <SkeletonBlock className="h-[126px] w-full rounded-2xl sm:w-[calc(50%-0.5rem)] lg:w-[calc(33.333%-0.667rem)]" />
               ) : (
                 achievements && (
-                <Link
-                  to="/players/$playerTag/achievements"
-                  params={{ playerTag }}
-                  className="glass flex w-full flex-col justify-between gap-3 rounded-2xl border border-white/10 p-5 transition hover:border-primary/30 sm:w-[calc(50%-0.5rem)] lg:w-[calc(33.333%-0.667rem)]"
-                >
-                  <div className="flex items-center gap-2 text-sm font-semibold uppercase tracking-wider text-white">
-                    <Trophy size={14} className="text-primary" /> Achievements
-                  </div>
-                  <div className="flex items-center gap-3">
-                    <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full border border-primary/30 bg-primary/10 text-xs font-bold text-primary">
-                      {achievements.total_count > 0
-                        ? Math.round((achievements.unlocked_count / achievements.total_count) * 100)
-                        : 0}
-                      %
+                  <Link
+                    to="/players/$playerTag/achievements"
+                    params={{ playerTag }}
+                    className="glass flex w-full flex-col justify-between gap-3 rounded-2xl border border-white/10 p-5 transition hover:border-primary/30 sm:w-[calc(50%-0.5rem)] lg:w-[calc(33.333%-0.667rem)]"
+                  >
+                    <div className="flex items-center gap-2 text-sm font-semibold uppercase tracking-wider text-white">
+                      <Trophy size={14} className="text-primary" /> Achievements
                     </div>
-                    <div>
-                      <p className="font-mono-stat text-2xl font-bold text-white">
-                        {achievements.unlocked_count}
-                        <span className="text-base text-gray-500 font-sans">
-                          {" "}
-                          / {achievements.total_count}
-                        </span>
-                      </p>
-                      <p className="text-xs text-gray-500">
-                        {achievements.unlocked_count > 0
-                          ? `${achievements.total_lp} Legacy Points`
-                          : "Empieza a competir para desbloquear achievements"}
-                      </p>
+                    <div className="flex items-center gap-3">
+                      <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full border border-primary/30 bg-primary/10 text-xs font-bold text-primary">
+                        {achievements.total_count > 0
+                          ? Math.round(
+                              (achievements.unlocked_count / achievements.total_count) * 100,
+                            )
+                          : 0}
+                        %
+                      </div>
+                      <div>
+                        <p className="font-mono-stat text-2xl font-bold text-white">
+                          {achievements.unlocked_count}
+                          <span className="text-base text-gray-500 font-sans">
+                            {" "}
+                            / {achievements.total_count}
+                          </span>
+                        </p>
+                        <p className="text-xs text-gray-500">
+                          {achievements.unlocked_count > 0
+                            ? `${achievements.total_lp} Legacy Points`
+                            : "Empieza a competir para desbloquear achievements"}
+                        </p>
+                      </div>
                     </div>
-                  </div>
-                  <span className="text-xs font-semibold text-primary">Ver todos →</span>
-                </Link>
+                    <span className="text-xs font-semibold text-primary">Ver todos →</span>
+                  </Link>
                 )
               )}
             </div>
@@ -679,7 +689,11 @@ function PublicProfilePage() {
                   </tr>
                 ) : (
                   paginatedTournaments.map((t: any) => (
-                    <tr key={t.id} className="border-b border-white/5">
+                    <tr
+                      key={t.id}
+                      onClick={() => goToTournament(t.id)}
+                      className="border-b border-white/5 cursor-pointer hover:bg-white/[0.03]"
+                    >
                       <td className="px-4 py-3 text-gray-400 font-mono-stat text-xs">
                         {t.date !== "—"
                           ? new Date(t.date + "T12:00:00").toLocaleDateString("es-MX", {
@@ -698,6 +712,7 @@ function PublicProfilePage() {
                               params={{ slug: t.store_slug }}
                               hash="liga-interna"
                               title="Ver leaderboard de esta liga"
+                              onClick={(e) => e.stopPropagation()}
                               className="ml-1.5 inline-block rounded-full bg-fuchsia-500/15 px-1.5 py-0.5 text-[9px] font-semibold uppercase tracking-wide text-fuchsia-300 hover:bg-fuchsia-500/25"
                             >
                               {t.league_name}
@@ -713,6 +728,7 @@ function PublicProfilePage() {
                             params={{ slug: t.store_slug }}
                             hash="liga-interna"
                             title="Ver leaderboard de esta liga"
+                            onClick={(e) => e.stopPropagation()}
                             className="ml-1.5 inline-block rounded-full bg-fuchsia-500/15 px-1.5 py-0.5 text-[9px] font-semibold uppercase tracking-wide text-fuchsia-300 hover:bg-fuchsia-500/25"
                           >
                             {t.league_name}
@@ -764,7 +780,11 @@ function PublicProfilePage() {
             ) : (
               <div className="divide-y divide-white/5">
                 {paginatedTournaments.map((t: any) => (
-                  <div key={t.id} className="px-4 py-3">
+                  <div
+                    key={t.id}
+                    onClick={() => goToTournament(t.id)}
+                    className="px-4 py-3 cursor-pointer active:bg-white/[0.03]"
+                  >
                     <div className="flex items-center justify-between">
                       <div className="min-w-0">
                         <div className="flex items-center gap-2">

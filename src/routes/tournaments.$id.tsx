@@ -1,4 +1,4 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link, useRouter } from "@tanstack/react-router";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
 import { toast } from "sonner";
@@ -11,7 +11,19 @@ import {
 } from "@/lib/nexus-rsvp.functions";
 import { useNexusRole } from "@/hooks/use-nexus-role";
 import { buildIcs, icsDataUri, icsFileName } from "@/lib/ics";
-import { Trophy, MapPin, Clock, CalendarPlus, Share2, Check, ShieldQuestion, Heart, Users } from "lucide-react";
+import {
+  Trophy,
+  MapPin,
+  Clock,
+  CalendarPlus,
+  Share2,
+  Check,
+  ShieldQuestion,
+  Heart,
+  Users,
+  ArrowLeft,
+  Store,
+} from "lucide-react";
 import { useState } from "react";
 
 export const Route = createFileRoute("/tournaments/$id")({
@@ -68,8 +80,18 @@ function TournamentNotFound() {
 }
 
 const MESES = [
-  "enero", "febrero", "marzo", "abril", "mayo", "junio",
-  "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre",
+  "enero",
+  "febrero",
+  "marzo",
+  "abril",
+  "mayo",
+  "junio",
+  "julio",
+  "agosto",
+  "septiembre",
+  "octubre",
+  "noviembre",
+  "diciembre",
 ];
 
 function formatLongDate(d: string) {
@@ -82,6 +104,7 @@ function PublicTournamentPage() {
   const [copied, setCopied] = useState(false);
   const { player } = useNexusRole();
   const qc = useQueryClient();
+  const router = useRouter();
 
   const t = data.tournament;
   const winner = data.standings[0];
@@ -107,12 +130,18 @@ function PublicTournamentPage() {
   };
   const createMut = useMutation({
     mutationFn: () => createFn({ data: { tournament_id: t.id } }),
-    onSuccess: () => { toast.success("¡Te anotaste!"); invalidate(); },
+    onSuccess: () => {
+      toast.success("¡Te anotaste!");
+      invalidate();
+    },
     onError: (e: any) => toast.error(e?.message ?? "No se pudo confirmar asistencia"),
   });
   const cancelMut = useMutation({
     mutationFn: () => cancelFn({ data: { tournament_id: t.id } }),
-    onSuccess: () => { toast.success("Asistencia cancelada"); invalidate(); },
+    onSuccess: () => {
+      toast.success("Asistencia cancelada");
+      invalidate();
+    },
     onError: (e: any) => toast.error(e?.message ?? "No se pudo cancelar"),
   });
   const rsvpBusy = createMut.isPending || cancelMut.isPending;
@@ -124,7 +153,11 @@ function PublicTournamentPage() {
       url: typeof window !== "undefined" ? window.location.href : "",
     };
     try {
-      if (typeof navigator !== "undefined" && navigator.share && (!navigator.canShare || navigator.canShare(shareData))) {
+      if (
+        typeof navigator !== "undefined" &&
+        navigator.share &&
+        (!navigator.canShare || navigator.canShare(shareData))
+      ) {
         await navigator.share(shareData);
         return;
       }
@@ -142,6 +175,24 @@ function PublicTournamentPage() {
 
   return (
     <div className="mx-auto max-w-3xl px-4 py-6">
+      <div className="mb-3 flex items-center justify-between gap-2">
+        <button
+          onClick={() => router.history.back()}
+          className="inline-flex items-center gap-1.5 text-sm text-secondary-foreground hover:text-white transition"
+        >
+          <ArrowLeft className="h-4 w-4" /> Volver
+        </button>
+        {t.store_slug && (
+          <Link
+            to="/stores/$slug"
+            params={{ slug: t.store_slug }}
+            className="inline-flex items-center gap-1.5 rounded-lg border border-border bg-white/5 px-3 py-1.5 text-xs font-semibold text-secondary-foreground hover:bg-white/10 hover:text-white transition"
+          >
+            <Store className="h-3.5 w-3.5" /> Ver tienda
+          </Link>
+        )}
+      </div>
+
       {/* Header card */}
       <div className="glass rounded-2xl border border-border p-6">
         <span className="inline-block rounded-full bg-primary/15 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wider text-primary">
@@ -261,17 +312,20 @@ function PublicTournamentPage() {
             <div>OMW%</div>
             <div>PTS</div>
           </div>
-          {data.standings.map((s: typeof data.standings[number]) => {
+          {data.standings.map((s: (typeof data.standings)[number]) => {
             const isTop3 = s.rank <= 3;
             const vde = s.wins == null ? "—" : `${s.wins}/${s.losses ?? 0}/${s.draws ?? 0}`;
-            const omw = typeof s.omw_percentage === "number" ? `${s.omw_percentage.toFixed(1)}%` : "—";
+            const omw =
+              typeof s.omw_percentage === "number" ? `${s.omw_percentage.toFixed(1)}%` : "—";
             const pts = typeof s.points_earned === "number" ? s.points_earned.toFixed(2) : "—";
             return (
               <div
                 key={`${s.rank}-${s.geek_tag}`}
                 className="grid grid-cols-[40px_1fr_70px_60px_60px] items-center gap-2 border-b border-white/[0.05] px-4 py-3"
               >
-                <div className={`font-mono text-sm ${isTop3 ? "font-bold text-primary" : "text-muted-foreground"}`}>
+                <div
+                  className={`font-mono text-sm ${isTop3 ? "font-bold text-primary" : "text-muted-foreground"}`}
+                >
                   {s.rank}
                 </div>
                 <div className="flex min-w-0 items-center gap-2">
@@ -295,11 +349,15 @@ function PublicTournamentPage() {
                       <div className="truncate text-sm font-medium text-white">{s.geek_tag}</div>
                     )}
                     {s.leader_name ? (
-                      <div className="truncate text-[10px] text-muted-foreground">{s.leader_name}</div>
+                      <div className="truncate text-[10px] text-muted-foreground">
+                        {s.leader_name}
+                      </div>
                     ) : null}
                   </div>
                 </div>
-                <div className="whitespace-nowrap font-mono text-xs text-secondary-foreground">{vde}</div>
+                <div className="whitespace-nowrap font-mono text-xs text-secondary-foreground">
+                  {vde}
+                </div>
                 <div className="font-mono text-xs text-muted-foreground">{omw}</div>
                 <div className="font-mono text-sm font-semibold text-white">{pts}</div>
               </div>

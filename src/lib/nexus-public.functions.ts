@@ -109,6 +109,60 @@ export const getStoreProfile = createServerFn({ method: "POST" })
     return { store: { ...store, games } };
   });
 
+// Historial público de torneos de una tienda — mismo criterio de status que
+// el perfil público de jugador y getPublicTournament: solo APPROVED/PUBLISHED,
+// nunca DRAFT ni rechazados.
+export const getStoreTournamentHistory = createServerFn({ method: "POST" })
+  .inputValidator((d: { slug: string }) => z.object({ slug: z.string().min(1).max(120) }).parse(d))
+  .handler(async ({ data }) => {
+    const admin = getNexusAdmin();
+    const { data: store, error: storeErr } = await admin
+      .from("stores")
+      .select("id")
+      .eq("slug", data.slug)
+      .eq("is_active", true)
+      .maybeSingle();
+    if (storeErr) failDb(storeErr);
+    if (!store) throw new Error("Tienda no encontrada");
+
+    const { data: tournaments, error } = await admin
+      .from("tournaments")
+      .select(
+        "id, tournament_date, game_id, league_id, games(name), store_leagues!tournaments_league_id_fkey(name)",
+      )
+      .eq("store_id", store.id)
+      .in("status", ["APPROVED", "PUBLISHED"])
+      .order("tournament_date", { ascending: false })
+      .limit(200);
+    if (error) failDb(error);
+
+    const tournamentIds = (tournaments ?? []).map((t) => t.id);
+    const { data: results, error: resultsErr } = tournamentIds.length
+      ? await admin
+          .from("tournament_results")
+          .select("tournament_id")
+          .in("tournament_id", tournamentIds)
+      : { data: [] as { tournament_id: string }[], error: null };
+    if (resultsErr) failDb(resultsErr);
+
+    const participantCounts = new Map<string, number>();
+    for (const r of results ?? []) {
+      participantCounts.set(r.tournament_id, (participantCounts.get(r.tournament_id) ?? 0) + 1);
+    }
+
+    return {
+      tournaments: (tournaments ?? []).map((t: any) => ({
+        id: t.id,
+        date: t.tournament_date as string,
+        game_id: t.game_id as string,
+        game_name: t.games?.name ?? "—",
+        league_name:
+          (Array.isArray(t.store_leagues) ? t.store_leagues[0] : t.store_leagues)?.name ?? null,
+        participants: participantCounts.get(t.id) ?? 0,
+      })),
+    };
+  });
+
 export const getStoreWeeklySchedule = createServerFn({ method: "POST" })
   .inputValidator((d: { slug: string }) => z.object({ slug: z.string().min(1).max(120) }).parse(d))
   .handler(async ({ data }) => {
@@ -246,7 +300,10 @@ export const getPublicCalendar = createServerFn({ method: "POST" })
     const sharedLeagueNameByNationalId = new Map<string, string>();
     for (const s of (leagueSchedules ?? []) as any[]) {
       if (s.shares_national_slot && s.national_schedule_id) {
-        sharedLeagueNameByNationalId.set(s.national_schedule_id, s.store_leagues?.name ?? "Liga interna");
+        sharedLeagueNameByNationalId.set(
+          s.national_schedule_id,
+          s.store_leagues?.name ?? "Liga interna",
+        );
       }
     }
 
@@ -255,7 +312,10 @@ export const getPublicCalendar = createServerFn({ method: "POST" })
     // Reindexadas por (store_id, league_id, fecha): aplican también a un
     // torneo ya subido para esa fecha, no solo a un slot proyectado.
     const leagueScheduleStoreLeagueById = new Map(
-      (leagueSchedules ?? []).map((s: any) => [s.id, { store_id: s.store_id, league_id: s.league_id }]),
+      (leagueSchedules ?? []).map((s: any) => [
+        s.id,
+        { store_id: s.store_id, league_id: s.league_id },
+      ]),
     );
     const ownLeagueScheduleIds = (leagueSchedules ?? [])
       .filter((s: any) => !s.shares_national_slot)
@@ -268,7 +328,10 @@ export const getPublicCalendar = createServerFn({ method: "POST" })
           .gte("occurrence_date", fromDate)
           .lte("occurrence_date", weekEndStr)
       : { data: [] as any[] };
-    const overrideByStoreLeagueDate = new Map<string, { start_time: string | null; label: string | null }>();
+    const overrideByStoreLeagueDate = new Map<
+      string,
+      { start_time: string | null; label: string | null }
+    >();
     for (const o of (overrides ?? []) as any[]) {
       const sched = leagueScheduleStoreLeagueById.get(o.league_schedule_id);
       if (!sched) continue;
@@ -279,7 +342,9 @@ export const getPublicCalendar = createServerFn({ method: "POST" })
     }
 
     const realTournamentKeys = new Set(
-      (tournaments ?? []).map((t: any) => `${t.store_id}_${t.tournament_date}_${t.league_id ?? "national"}`),
+      (tournaments ?? []).map(
+        (t: any) => `${t.store_id}_${t.tournament_date}_${t.league_id ?? "national"}`,
+      ),
     );
 
     // Excepciones puntuales al schedule nacional — mismo dato que ve
@@ -300,14 +365,20 @@ export const getPublicCalendar = createServerFn({ method: "POST" })
           .gte("occurrence_date", fromDate)
           .lte("occurrence_date", weekEndStr)
       : { data: [] as any[] };
-    const nationalOverrideByStoreGameDate = new Map<string, { start_time: string | null; label: string | null }>();
+    const nationalOverrideByStoreGameDate = new Map<
+      string,
+      { start_time: string | null; label: string | null }
+    >();
     for (const o of (nationalOverrides ?? []) as any[]) {
       const sched = scheduleStoreGameById.get(o.national_schedule_id);
       if (!sched) continue;
-      nationalOverrideByStoreGameDate.set(`${sched.store_id}_${sched.game_id}_${o.occurrence_date}`, {
-        start_time: o.start_time,
-        label: o.label,
-      });
+      nationalOverrideByStoreGameDate.set(
+        `${sched.store_id}_${sched.game_id}_${o.occurrence_date}`,
+        {
+          start_time: o.start_time,
+          label: o.label,
+        },
+      );
     }
 
     const scheduledEvents: any[] = [];
@@ -318,7 +389,9 @@ export const getPublicCalendar = createServerFn({ method: "POST" })
         if (d.getDay() !== s.day_of_week) continue;
         if (realTournamentKeys.has(`${s.store_id}_${dateStr}_national`)) continue;
 
-        const nationalOverride = nationalOverrideByStoreGameDate.get(`${s.store_id}_${s.game_id}_${dateStr}`);
+        const nationalOverride = nationalOverrideByStoreGameDate.get(
+          `${s.store_id}_${s.game_id}_${dateStr}`,
+        );
 
         scheduledEvents.push({
           id: `schedule_${s.id}_${dateStr}`,
@@ -396,30 +469,30 @@ export const getPublicCalendar = createServerFn({ method: "POST" })
           ? overrideByStoreLeagueDate.get(`${t.store_id}_${t.league_id}_${t.tournament_date}`)
           : nationalOverrideByStoreGameDate.get(`${t.store_id}_${t.game_id}_${t.tournament_date}`);
         return {
-        id: t.id,
-        date: t.tournament_date as string,
-        time: tOverride?.start_time || t.tournament_time || null,
-        game_id: t.game_id as string,
-        game_name: tOverride?.label || (t.games?.name ?? "—"),
-        game_slug: t.games?.slug ?? "",
-        store_id: t.store_id as string,
-        store_slug: t.stores?.slug ?? "",
-        store_name: t.stores?.name ?? "—",
-        store_city: t.stores?.city ?? "—",
-        store_state: t.stores?.state ?? "—",
-        store_address: t.stores?.address ?? null,
-        store_phone: t.stores?.phone ?? null,
-        store_description: t.stores?.description ?? null,
-        store_opening_hours: t.stores?.opening_hours ?? null,
-        store_instagram: t.stores?.instagram ?? null,
-        store_website: t.stores?.website ?? null,
-        store_twitter: t.stores?.twitter ?? null,
-        store_twitch: t.stores?.twitch ?? null,
-        store_google_maps_url: t.stores?.google_maps_url ?? null,
-        zone: t.stores?.zone ?? "—",
-        is_scheduled: false,
-        league_id: t.league_id ?? null,
-        league_name: t.store_leagues?.name ?? null,
+          id: t.id,
+          date: t.tournament_date as string,
+          time: tOverride?.start_time || t.tournament_time || null,
+          game_id: t.game_id as string,
+          game_name: tOverride?.label || (t.games?.name ?? "—"),
+          game_slug: t.games?.slug ?? "",
+          store_id: t.store_id as string,
+          store_slug: t.stores?.slug ?? "",
+          store_name: t.stores?.name ?? "—",
+          store_city: t.stores?.city ?? "—",
+          store_state: t.stores?.state ?? "—",
+          store_address: t.stores?.address ?? null,
+          store_phone: t.stores?.phone ?? null,
+          store_description: t.stores?.description ?? null,
+          store_opening_hours: t.stores?.opening_hours ?? null,
+          store_instagram: t.stores?.instagram ?? null,
+          store_website: t.stores?.website ?? null,
+          store_twitter: t.stores?.twitter ?? null,
+          store_twitch: t.stores?.twitch ?? null,
+          store_google_maps_url: t.stores?.google_maps_url ?? null,
+          zone: t.stores?.zone ?? "—",
+          is_scheduled: false,
+          league_id: t.league_id ?? null,
+          league_name: t.store_leagues?.name ?? null,
         };
       }),
       ...scheduledEvents,
@@ -454,7 +527,10 @@ type LeagueStanding = {
   omw_percentage: number;
 };
 
-async function computeLeagueStandings(admin: any, tournamentIds: string[]): Promise<LeagueStanding[]> {
+async function computeLeagueStandings(
+  admin: any,
+  tournamentIds: string[],
+): Promise<LeagueStanding[]> {
   if (!tournamentIds.length) return [];
   const { data: results } = await admin
     .from("tournament_results")
@@ -521,7 +597,9 @@ export const getStoreActiveLeagues = createServerFn({ method: "POST" })
 
     const result = await Promise.all(
       (leagues ?? []).map(async (league: any) => {
-        const tournamentIds = (league.store_league_tournaments ?? []).map((t: any) => t.tournament_id);
+        const tournamentIds = (league.store_league_tournaments ?? []).map(
+          (t: any) => t.tournament_id,
+        );
         return {
           id: league.id,
           name: league.name,
@@ -529,7 +607,9 @@ export const getStoreActiveLeagues = createServerFn({ method: "POST" })
           game_name: (Array.isArray(league.games) ? league.games[0] : league.games)?.name ?? "—",
           start_date: league.start_date,
           end_date: league.end_date,
-          prizes: (league.store_league_prizes ?? []).sort((a: any, b: any) => a.sort_order - b.sort_order),
+          prizes: (league.store_league_prizes ?? []).sort(
+            (a: any, b: any) => a.sort_order - b.sort_order,
+          ),
           standings: await computeLeagueStandings(admin, tournamentIds),
         };
       }),
@@ -591,7 +671,7 @@ export const getPublicTournament = createServerFn({ method: "POST" })
 
     const { data: players } = await admin
       .from("players")
-      .select("id, geek_tag, is_profile_public")
+      .select("id, geek_tag, is_profile_public, auth_user_id")
       .in("id", playerIds);
     const playerMap = new Map(((players ?? []) as any[]).map((p) => [p.id, p]));
 
@@ -654,6 +734,11 @@ export const getPublicTournament = createServerFn({ method: "POST" })
       const p = playerMap.get(r.player_id) as any;
       const rawLeaderId = topLeaderByPlayer.get(r.player_id);
       const leader = rawLeaderId ? leaderMap.get(resolveId(rawLeaderId)) : null;
+      // El líder solo se expone si el perfil del jugador es público, o si el
+      // resultado no está ligado a ninguna cuenta real (auth_user_id null —
+      // placeholder cargado por el TO, nadie a quien exponer). Un perfil
+      // privado nunca debe filtrar su leader en una página pública.
+      const canShowLeader = !p || !p.auth_user_id || Boolean(p.is_profile_public);
       return {
         rank: r.rank as number,
         geek_tag: p?.geek_tag ?? "—",
@@ -663,8 +748,8 @@ export const getPublicTournament = createServerFn({ method: "POST" })
         draws: r.draws as number | null,
         points_earned: r.points_earned as number | null,
         omw_percentage: r.omw_percentage as number | null,
-        leader_name: (leader as any)?.base_name ?? null,
-        leader_image: (leader as any)?.card_image ?? null,
+        leader_name: canShowLeader ? ((leader as any)?.base_name ?? null) : null,
+        leader_image: canShowLeader ? ((leader as any)?.card_image ?? null) : null,
       };
     });
 

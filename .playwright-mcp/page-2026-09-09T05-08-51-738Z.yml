@@ -1,0 +1,51 @@
+- generic [ref=f49e2]:
+  - generic [ref=f49e3]:
+    - banner [ref=f49e4]:
+      - link "Trading Card Nexus" [ref=f49e7] [cursor=pointer]:
+        - /url: /
+        - generic [ref=f49e15]: Trading Card
+        - generic [ref=f49e16]: Nexus
+    - generic [ref=f49e18]:
+      - banner [ref=f49e19]:
+        - paragraph [ref=f49e20]: Nexus
+        - heading "Tiendas del Circuito" [level=1] [ref=f49e21]
+        - paragraph [ref=f49e22]: Encuentra dónde jugar en cada región.
+      - generic [ref=f49e23]:
+        - heading "Zona Monterrey" [level=2] [ref=f49e24]
+        - 'link "Tienda Mock #1 Monterrey One Piece Card Game Lun-Dom 13:00-23:00 Cómo llegar" [ref=f49e27] [cursor=pointer]':
+          - /url: /stores/geek-collector
+          - generic [ref=f49e29]:
+            - 'heading "Tienda Mock #1" [level=3] [ref=f49e30]'
+            - paragraph [ref=f49e31]: Monterrey
+          - generic [ref=f49e35]: One Piece Card Game
+          - paragraph [ref=f49e37]: Lun-Dom 13:00-23:00
+          - button "Cómo llegar" [ref=f49e53]
+      - generic [ref=f49e56]:
+        - heading "Zona Extendida" [level=2] [ref=f49e57]
+        - generic [ref=f49e58]:
+          - link [ref=f49e60] [cursor=pointer]:
+            - /url: /stores/tienda-2
+            - generic [ref=f49e62]:
+              - heading "Tienda 2" [level=3] [ref=f49e63]
+              - paragraph [ref=f49e64]: —
+          - link [ref=f49e70] [cursor=pointer]:
+            - /url: /stores/tienda-3
+            - generic [ref=f49e72]:
+              - heading "Tienda 3" [level=3] [ref=f49e73]
+              - paragraph [ref=f49e74]: —
+          - link [ref=f49e80] [cursor=pointer]:
+            - /url: /stores/tienda-4
+            - generic [ref=f49e82]:
+              - heading "Tienda 4" [level=3] [ref=f49e83]
+              - paragraph [ref=f49e84]: —
+          - link [ref=f49e90] [cursor=pointer]:
+            - /url: /stores/tienda-5
+            - generic [ref=f49e92]:
+              - heading "Tienda 5" [level=3] [ref=f49e93]
+              - paragraph [ref=f49e94]: —
+          - link [ref=f49e100] [cursor=pointer]:
+            - /url: /stores/tienda-6
+            - generic [ref=f49e102]:
+              - heading "Tienda 6" [level=3] [ref=f49e103]
+              - paragraph [ref=f49e104]: —
+  - region "Notifications alt+T"

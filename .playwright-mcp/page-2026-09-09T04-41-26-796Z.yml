@@ -1,0 +1,92 @@
+- generic [ref=f20e2]:
+  - generic [ref=f20e3]:
+    - banner [ref=f20e4]:
+      - link [ref=f20e7] [cursor=pointer]:
+        - /url: /
+    - main [ref=f20e17]:
+      - link "Volver al directorio" [ref=f20e19] [cursor=pointer]:
+        - /url: /stores
+      - generic [ref=f20e22]:
+        - generic [ref=f20e24]:
+          - paragraph [ref=f20e25]: Zona Monterrey
+          - 'heading "Tienda Mock #1" [level=1] [ref=f20e26]'
+        - paragraph [ref=f20e27]: Tu tienda especializada en juegos de cartas coleccionables y productos geek. Ofrecemos los mejores productos de Magic, Pokémon, Yu-Gi-Oh! y más.
+        - generic [ref=f20e28]: One Piece Card Game
+        - generic [ref=f20e30]:
+          - link "Cómo llegar" [ref=f20e32] [cursor=pointer]:
+            - /url: https://maps.app.goo.gl/zNH3PWtt6RAhABby9
+          - generic [ref=f20e35]:
+            - link [ref=f20e36] [cursor=pointer]:
+              - /url: https://instagram.com/geek.collectormx
+            - link [ref=f20e40] [cursor=pointer]:
+              - /url: https://geekcollector.com/
+            - link [ref=f20e44] [cursor=pointer]:
+              - /url: https://x.com/geekcollectormx
+            - link [ref=f20e47] [cursor=pointer]:
+              - /url: https://twitch.tv/geekcollectormty
+      - generic [ref=f20e50]:
+        - heading "Ubicación y horario" [level=2] [ref=f20e51]
+        - generic [ref=f20e52]:
+          - paragraph [ref=f20e53]: Alfonso Reyes 255, Monterrey, Nuevo Leon
+          - paragraph [ref=f20e57]: Lun-Dom 13:00-23:00
+          - paragraph [ref=f20e61]: "+528120802420"
+        - button "Ver mapa" [ref=f20e64]
+      - generic [ref=f20e66]:
+        - heading "Calendario de torneos" [level=2] [ref=f20e67]
+        - generic [ref=f20e68]:
+          - button [ref=f20e69]
+          - generic [ref=f20e72]: 7 sep — 13 sep 2026
+          - button [ref=f20e73]
+          - button "Hoy" [ref=f20e76]
+      - table [ref=f20e90]:
+        - rowgroup [ref=f20e91]:
+          - row [ref=f20e92]:
+            - columnheader "#" [ref=f20e93]
+            - columnheader "Tag" [ref=f20e94]
+            - columnheader "Pts" [ref=f20e95]
+            - columnheader "Trn" [ref=f20e96]
+            - columnheader "W" [ref=f20e97]
+            - columnheader "OMW%" [ref=f20e98]
+        - rowgroup [ref=f20e99]:
+          - row [ref=f20e100]:
+            - cell [ref=f20e101]
+            - cell [ref=f20e103]
+            - cell [ref=f20e105]
+            - cell [ref=f20e108]
+            - cell [ref=f20e111]
+            - cell [ref=f20e114]
+          - row [ref=f20e117]:
+            - cell [ref=f20e118]
+            - cell [ref=f20e120]
+            - cell [ref=f20e122]
+            - cell [ref=f20e125]
+            - cell [ref=f20e128]
+            - cell [ref=f20e131]
+          - row [ref=f20e134]:
+            - cell [ref=f20e135]
+            - cell [ref=f20e137]
+            - cell [ref=f20e139]
+            - cell [ref=f20e142]
+            - cell [ref=f20e145]
+            - cell [ref=f20e148]
+          - row [ref=f20e151]:
+            - cell [ref=f20e152]
+            - cell [ref=f20e154]
+            - cell [ref=f20e156]
+            - cell [ref=f20e159]
+            - cell [ref=f20e162]
+            - cell [ref=f20e165]
+          - row [ref=f20e168]:
+            - cell [ref=f20e169]
+            - cell [ref=f20e171]
+            - cell [ref=f20e173]
+            - cell [ref=f20e176]
+            - cell [ref=f20e179]
+            - cell [ref=f20e182]
+      - heading "Historial de torneos" [level=2] [ref=f20e186]
+  - region "Notifications alt+T"
+  - navigation "Navegación principal" [ref=f20e194]:
+    - link "Ranking" [ref=f20e195] [cursor=pointer]:
+      - /url: /
+    - link "Entrar" [ref=f20e204] [cursor=pointer]:
+      - /url: /login

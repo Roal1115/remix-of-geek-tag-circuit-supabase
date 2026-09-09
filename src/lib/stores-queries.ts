@@ -1,5 +1,9 @@
 import { queryOptions } from "@tanstack/react-query";
-import { getPublicStoresList, getStoreProfile } from "./nexus-public.functions";
+import {
+  getPublicStoresList,
+  getStoreProfile,
+  getStoreTournamentHistory,
+} from "./nexus-public.functions";
 
 export const publicStoresQuery = () =>
   queryOptions({
@@ -13,6 +17,14 @@ export const storeProfileQuery = (slug: string) =>
   queryOptions({
     queryKey: ["store-profile", slug],
     queryFn: () => getStoreProfile({ data: { slug } }),
+    staleTime: 60_000,
+    gcTime: 5 * 60_000,
+  });
+
+export const storeTournamentHistoryQuery = (slug: string) =>
+  queryOptions({
+    queryKey: ["store-tournament-history", slug],
+    queryFn: () => getStoreTournamentHistory({ data: { slug } }),
     staleTime: 60_000,
     gcTime: 5 * 60_000,
   });

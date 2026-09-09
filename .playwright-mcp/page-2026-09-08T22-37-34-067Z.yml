@@ -1,0 +1,80 @@
+- generic [ref=f7e2]:
+  - generic [ref=f7e3]:
+    - banner [ref=f7e4]:
+      - link "Trading Card Nexus" [ref=f7e7] [cursor=pointer]:
+        - /url: /
+        - generic [ref=f7e15]: Trading Card
+        - generic [ref=f7e16]: Nexus
+    - generic [ref=f7e18]:
+      - complementary [ref=f7e19]
+      - main [ref=f7e20]:
+        - generic [ref=f7e23]:
+          - generic [ref=f7e24]: O
+          - generic [ref=f7e25]:
+            - paragraph [ref=f7e26]: Player Tag
+            - heading "One2p" [level=1] [ref=f7e27]
+            - paragraph [ref=f7e28]: Miembro desde junio de 2026
+            - generic [ref=f7e29]:
+              - generic [ref=f7e30]:
+                - paragraph [ref=f7e31]: Win rate
+                - paragraph [ref=f7e32]:
+                  - text: 60%
+                  - generic [ref=f7e33]: (6V-4D)
+              - generic [ref=f7e34]:
+                - paragraph [ref=f7e35]: Últimos resultados
+                - generic [ref=f7e36]:
+                  - generic "#4 — 2026-08-30" [ref=f7e37]: "4"
+                  - generic "#4 — 2026-09-03" [ref=f7e38]: "4"
+            - button "Compartir perfil" [ref=f7e39]
+        - generic [ref=f7e46]:
+          - heading "Standing" [level=2] [ref=f7e47]
+          - generic [ref=f7e49]:
+            - generic [ref=f7e50]: One Piece Card Game
+            - generic [ref=f7e53]:
+              - generic [ref=f7e54]:
+                - paragraph [ref=f7e55]: Rank
+                - paragraph [ref=f7e58]: "#30"
+              - generic [ref=f7e59]:
+                - paragraph [ref=f7e60]: Puntos
+                - paragraph [ref=f7e65]: "60"
+            - generic [ref=f7e66]:
+              - generic [ref=f7e67]: 1 jugados
+              - generic [ref=f7e68]: ·
+              - generic [ref=f7e69]: 0 ganados
+        - generic [ref=f7e71]:
+          - generic [ref=f7e72]:
+            - heading "Historial de torneos" [level=2] [ref=f7e77]
+            - generic [ref=f7e78]: 2 torneos
+          - generic [ref=f7e79]:
+            - button "Todas las ligas" [ref=f7e80]
+            - button "Circuito Nacional" [ref=f7e81]
+            - button "Prueba Verano liga interna" [ref=f7e82]
+          - table [ref=f7e84]:
+            - rowgroup [ref=f7e85]:
+              - row [ref=f7e86]:
+                - columnheader "Fecha" [ref=f7e87]
+                - columnheader "Tienda" [ref=f7e88]
+                - columnheader "V / D" [ref=f7e89]
+                - columnheader "Posición" [ref=f7e90]
+                - columnheader "Pts Arena" [ref=f7e91]
+            - rowgroup [ref=f7e92]:
+              - row [ref=f7e93] [cursor=pointer]:
+                - cell "3 sep 2026" [ref=f7e94]
+                - 'cell "Tienda Mock #1 · Monterrey" [ref=f7e95]':
+                  - text: "Tienda Mock #1"
+                  - generic [ref=f7e96]: · Monterrey
+                - cell "3 / 2" [ref=f7e97]
+                - cell "#4" [ref=f7e98]
+                - cell "+60.00" [ref=f7e100]
+              - row [ref=f7e101] [cursor=pointer]:
+                - cell "30 ago 2026" [ref=f7e102]
+                - 'cell "Tienda Mock #1 · Monterrey Prueba Verano liga interna" [ref=f7e103]':
+                  - text: "Tienda Mock #1"
+                  - generic [ref=f7e104]: · Monterrey
+                  - link "Prueba Verano liga interna" [ref=f7e105]:
+                    - /url: /stores/geek-collector#liga-interna
+                - cell "3 / 2" [ref=f7e106]
+                - cell "#4" [ref=f7e107]
+                - cell "+60.00" [ref=f7e109]
+      - complementary [ref=f7e110]
+  - region "Notifications alt+T"

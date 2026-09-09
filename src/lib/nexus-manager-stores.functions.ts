@@ -3,10 +3,15 @@ import { z } from "zod";
 import { failDb } from "./nexus-admin.server";
 import { requireNexusManager, requireNexusAdmin } from "./nexus-auth.middleware";
 import { loadTournamentDetail } from "./nexus-tournament-detail.server";
-import { logAction, recomputeSnapshot, tfMonth, type TournamentStatus } from "./nexus-admin.functions";
+import {
+  logAction,
+  recomputeSnapshot,
+  tfMonth,
+  type TournamentStatus,
+} from "./nexus-admin.functions";
 import { mondayOfWeek, toLocalDateStr } from "./utils";
 import { getManagerGameIds, assertManagerOwnsGame } from "./nexus-manager-shared";
-
+import { httpUrlSchema } from "./nexus-admin-shared";
 
 export const getStoreSchedulesForManager = createServerFn({ method: "POST" })
   .middleware([requireNexusManager])
@@ -236,11 +241,11 @@ export const updateStoreData = createServerFn({ method: "POST" })
           state: z.string().max(120).optional(),
           address: z.string().max(300).optional(),
           phone: z.string().max(20).optional(),
-          google_maps_url: z.string().max(500).optional(),
+          google_maps_url: httpUrlSchema,
           description: z.string().max(500).optional(),
           opening_hours: z.string().max(200).optional(),
           instagram: z.string().max(100).optional(),
-          website: z.string().max(200).optional(),
+          website: httpUrlSchema,
           twitter: z.string().max(100).optional(),
           twitch: z.string().max(100).optional(),
         })
@@ -286,5 +291,3 @@ export const updateStoreData = createServerFn({ method: "POST" })
     await logAction(admin, player, "STORE_UPDATED", "store", store_id, fields.name);
     return { ok: true };
   });
-
-

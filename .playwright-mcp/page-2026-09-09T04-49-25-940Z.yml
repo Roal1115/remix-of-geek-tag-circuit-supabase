@@ -1,0 +1,185 @@
+- generic [ref=f24e2]:
+  - generic [ref=f24e3]:
+    - banner [ref=f24e4]:
+      - generic [ref=f24e5]:
+        - link "Trading Card Nexus" [ref=f24e7] [cursor=pointer]:
+          - /url: /
+          - generic [ref=f24e15]: Trading Card
+          - generic [ref=f24e16]: Nexus
+        - button "One Piece Card Game" [ref=f24e200]
+        - link "Iniciar sesión" [ref=f24e204] [cursor=pointer]:
+          - /url: /login
+    - generic [ref=f24e579]:
+      - complementary [ref=f24e580]
+      - main [ref=f24e581]:
+        - link "Volver al directorio" [ref=f24e583] [cursor=pointer]:
+          - /url: /stores
+        - generic [ref=f24e586]:
+          - generic [ref=f24e588]:
+            - paragraph [ref=f24e589]: Zona Monterrey
+            - 'heading "Tienda Mock #1" [level=1] [ref=f24e590]'
+          - paragraph [ref=f24e591]: Tu tienda especializada en juegos de cartas coleccionables y productos geek. Ofrecemos los mejores productos de Magic, Pokémon, Yu-Gi-Oh! y más.
+          - generic [ref=f24e592]: One Piece Card Game
+          - generic [ref=f24e594]:
+            - generic [ref=f24e595]:
+              - link "Cómo llegar" [ref=f24e596] [cursor=pointer]:
+                - /url: https://maps.app.goo.gl/zNH3PWtt6RAhABby9
+              - link "Ver Liga Interna" [ref=f24e954] [cursor=pointer]:
+                - /url: "#liga-interna"
+            - generic [ref=f24e599]:
+              - link [ref=f24e600] [cursor=pointer]:
+                - /url: https://instagram.com/geek.collectormx
+              - link [ref=f24e604] [cursor=pointer]:
+                - /url: https://geekcollector.com/
+              - link [ref=f24e608] [cursor=pointer]:
+                - /url: https://x.com/geekcollectormx
+              - link [ref=f24e611] [cursor=pointer]:
+                - /url: https://twitch.tv/geekcollectormty
+        - generic [ref=f24e614]:
+          - generic [ref=f24e615]:
+            - heading "Ubicación y horario" [level=2] [ref=f24e616]
+            - generic [ref=f24e617]:
+              - paragraph [ref=f24e618]: Alfonso Reyes 255, Monterrey, Nuevo Leon
+              - paragraph [ref=f24e622]: Lun-Dom 13:00-23:00
+              - paragraph [ref=f24e626]: "+528120802420"
+            - button "Ver mapa" [ref=f24e629]
+          - generic [ref=f24e630]:
+            - heading "Actividad reciente" [level=2] [ref=f24e631]
+            - generic [ref=f24e632]:
+              - button "3 sep 10 jug." [ref=f24e633]:
+                - generic [ref=f24e634]: 3 sep
+                - generic [ref=f24e635]: 10 jug.
+              - button "30 ago 12 jug." [ref=f24e636]:
+                - generic [ref=f24e637]: 30 ago
+                - generic [ref=f24e638]: 12 jug.
+              - button "29 ago 10 jug." [ref=f24e639]:
+                - generic [ref=f24e640]: 29 ago
+                - generic [ref=f24e641]: 10 jug.
+            - link "Ver historial completo →" [ref=f24e642] [cursor=pointer]:
+              - /url: "#historial-torneos"
+        - generic [ref=f24e643]:
+          - generic [ref=f24e644]:
+            - heading "Calendario de torneos" [level=2] [ref=f24e645]
+            - generic [ref=f24e646]:
+              - button [ref=f24e647]
+              - generic [ref=f24e650]: 7 sep — 13 sep 2026
+              - button [ref=f24e651]
+              - button "Hoy" [ref=f24e654]
+          - generic [ref=f24e655]: One Piece Card Game
+          - generic [ref=f24e660]:
+            - generic [ref=f24e661]:
+              - generic [ref=f24e663]:
+                - generic [ref=f24e664]: Lun
+                - generic [ref=f24e665]: "7"
+              - generic [ref=f24e666]:
+                - generic [ref=f24e667]: Mar
+                - generic [ref=f24e668]: "8"
+              - generic [ref=f24e669]:
+                - generic [ref=f24e670]: Mié
+                - generic [ref=f24e671]: "9"
+              - generic [ref=f24e672]:
+                - generic [ref=f24e673]: Jue
+                - generic [ref=f24e674]: "10"
+              - generic [ref=f24e675]:
+                - generic [ref=f24e676]: Vie
+                - generic [ref=f24e677]: "11"
+              - generic [ref=f24e678]:
+                - generic [ref=f24e679]: Sáb
+                - generic [ref=f24e680]: "12"
+              - generic [ref=f24e681]:
+                - generic [ref=f24e682]: Dom
+                - generic [ref=f24e683]: "13"
+            - generic [ref=f24e684]:
+              - generic [ref=f24e685]: 13:00
+              - button [ref=f24e692]:
+                - paragraph [ref=f24e693]: "Tienda Mock #1"
+                - paragraph [ref=f24e694]: One Piece Card Game
+                - paragraph [ref=f24e695]: Prueba Verano liga interna
+            - generic [ref=f24e697]: 14:00
+            - generic [ref=f24e706]: 15:00
+            - generic [ref=f24e715]: 16:00
+            - generic [ref=f24e724]: 17:00
+            - generic [ref=f24e733]: 18:00
+            - generic [ref=f24e742]: 19:00
+            - generic [ref=f24e751]:
+              - generic [ref=f24e752]: 20:00
+              - button [ref=f24e758]:
+                - paragraph [ref=f24e759]: "Tienda Mock #1"
+                - paragraph [ref=f24e760]: One Piece Card Game
+            - generic [ref=f24e763]: 21:00
+            - generic [ref=f24e772]: 22:00
+            - generic [ref=f24e781]: 23:00
+        - generic [ref=f24e962]:
+          - generic [ref=f24e963]:
+            - generic [ref=f24e964]:
+              - generic [ref=f24e965]:
+                - paragraph [ref=f24e966]: Liga Interna
+                - generic [ref=f24e967]: —
+              - heading "Prueba Verano liga interna" [level=2] [ref=f24e968]
+              - paragraph [ref=f24e969]: 2026-08-23 — 2026-12-26
+            - generic [ref=f24e970]: 110 días restantes
+          - generic [ref=f24e971]: Leaderboard
+          - paragraph [ref=f24e978]: Aún no hay resultados registrados en esta liga.
+          - generic [ref=f24e979]:
+            - generic [ref=f24e980]: Premios y Recompensas
+            - generic [ref=f24e985]:
+              - paragraph [ref=f24e987]: "1er Lugar: 1 Booster Box Op 17"
+              - paragraph [ref=f24e989]: "2do Lugar: Tacos Laredo"
+        - generic [ref=f24e895]:
+          - generic [ref=f24e896]:
+            - heading "Historial de torneos" [level=2] [ref=f24e897]
+            - generic [ref=f24e898]: One Piece Card Game
+          - table [ref=f24e900]:
+            - rowgroup [ref=f24e901]:
+              - row [ref=f24e902]:
+                - columnheader "Fecha" [ref=f24e903]
+                - columnheader "Liga" [ref=f24e904]
+                - columnheader "Jugadores" [ref=f24e905]
+            - rowgroup [ref=f24e906]:
+              - row [ref=f24e907] [cursor=pointer]:
+                - cell "3 sep 2026" [ref=f24e908]
+                - cell "—" [ref=f24e909]
+                - cell "10" [ref=f24e910]
+              - row [ref=f24e911] [cursor=pointer]:
+                - cell "30 ago 2026" [ref=f24e912]
+                - cell "Prueba Verano liga interna" [ref=f24e913]
+                - cell "12" [ref=f24e915]
+              - row [ref=f24e916] [cursor=pointer]:
+                - cell "29 ago 2026" [ref=f24e917]
+                - cell "—" [ref=f24e918]
+                - cell "10" [ref=f24e919]
+              - row [ref=f24e920] [cursor=pointer]:
+                - cell "26 ago 2026" [ref=f24e921]
+                - cell "—" [ref=f24e922]
+                - cell "16" [ref=f24e923]
+              - row [ref=f24e924] [cursor=pointer]:
+                - cell "22 ago 2026" [ref=f24e925]
+                - cell "—" [ref=f24e926]
+                - cell "17" [ref=f24e927]
+              - row [ref=f24e928] [cursor=pointer]:
+                - cell "19 ago 2026" [ref=f24e929]
+                - cell "—" [ref=f24e930]
+                - cell "10" [ref=f24e931]
+              - row [ref=f24e932] [cursor=pointer]:
+                - cell "15 ago 2026" [ref=f24e933]
+                - cell "—" [ref=f24e934]
+                - cell "17" [ref=f24e935]
+              - row [ref=f24e936] [cursor=pointer]:
+                - cell "12 ago 2026" [ref=f24e937]
+                - cell "—" [ref=f24e938]
+                - cell "16" [ref=f24e939]
+              - row [ref=f24e940] [cursor=pointer]:
+                - cell "8 ago 2026" [ref=f24e941]
+                - cell "—" [ref=f24e942]
+                - cell "11" [ref=f24e943]
+              - row [ref=f24e944] [cursor=pointer]:
+                - cell "5 ago 2026" [ref=f24e945]
+                - cell "—" [ref=f24e946]
+                - cell "16" [ref=f24e947]
+          - generic [ref=f24e948]:
+            - generic [ref=f24e949]: Página 1 de 2
+            - generic [ref=f24e950]:
+              - button "← Anterior" [disabled] [ref=f24e951]
+              - button "Siguiente →" [ref=f24e952]
+      - complementary [ref=f24e953]
+  - region "Notifications alt+T"

@@ -1,0 +1,11 @@
+- generic [ref=e2]:
+  - generic [ref=e3]:
+    - banner [ref=e4]:
+      - link "Trading Card Nexus" [ref=e7] [cursor=pointer]:
+        - /url: /
+        - generic [ref=e15]: Trading Card
+        - generic [ref=e16]: Nexus
+    - banner [ref=e19]:
+      - paragraph [ref=e20]: Nexus
+      - heading "Tiendas del Circuito" [level=1] [ref=e21]
+  - region "Notifications alt+T"

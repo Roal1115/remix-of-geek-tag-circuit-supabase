@@ -5,7 +5,7 @@ import { getNexusAdmin, failDb } from "./nexus-admin.server";
 import { todayInMexicoStr, mondayOfWeek, toLocalDateStr } from "./utils";
 import type { TablesInsert } from "./database.types";
 import type { TournamentStatus } from "./nexus-admin-shared";
-
+import { httpUrlSchema } from "./nexus-admin-shared";
 
 export const getOrganizerOverview = createServerFn({ method: "POST" })
   .middleware([requireNexusOrganizer])
@@ -19,7 +19,11 @@ export const getOrganizerOverview = createServerFn({ method: "POST" })
         .eq("is_active", true)
         .order("city", { ascending: true })
         .order("name", { ascending: true }),
-      admin.from("games").select("id, slug, name, publisher, logo_url, is_active").eq("is_active", true).order("name"),
+      admin
+        .from("games")
+        .select("id, slug, name, publisher, logo_url, is_active")
+        .eq("is_active", true)
+        .order("name"),
       player.home_store_id
         ? admin
             .from("stores")
@@ -49,9 +53,14 @@ export const updateHomeStore = createServerFn({ method: "POST" })
   .handler(async ({ data, context }) => {
     const { admin, player } = context;
     if (player.role !== "admin") {
-      throw new Error("Tu tienda es asignada por el administrador. Contacta a soporte para cambios.");
+      throw new Error(
+        "Tu tienda es asignada por el administrador. Contacta a soporte para cambios.",
+      );
     }
-    const { error } = await admin.from("players").update({ home_store_id: data.store_id }).eq("id", player.id);
+    const { error } = await admin
+      .from("players")
+      .update({ home_store_id: data.store_id })
+      .eq("id", player.id);
     if (error) failDb(error);
     return { ok: true };
   });
@@ -82,11 +91,11 @@ export const updateStoreInfo = createServerFn({ method: "POST" })
           state: z.string().max(120).optional(),
           address: z.string().max(300).optional(),
           phone: z.string().max(20).optional(),
-          google_maps_url: z.string().max(500).optional(),
+          google_maps_url: httpUrlSchema,
           description: z.string().max(500).optional(),
           opening_hours: z.string().max(200).optional(),
           instagram: z.string().max(100).optional(),
-          website: z.string().max(200).optional(),
+          website: httpUrlSchema,
           twitter: z.string().max(100).optional(),
           twitch: z.string().max(100).optional(),
         })
@@ -143,7 +152,10 @@ export const lookupPlayerTags = createServerFn({ method: "POST" })
   )
   .handler(async ({ data, context }) => {
     const { admin } = context;
-    const { data: rows, error } = await admin.from("players").select("geek_tag").in("geek_tag", data.tags);
+    const { data: rows, error } = await admin
+      .from("players")
+      .select("geek_tag")
+      .in("geek_tag", data.tags);
     if (error) failDb(error);
     return { existing: (rows ?? []).map((r) => r.geek_tag) };
   });
@@ -160,17 +172,17 @@ export const getOrganizerBadgeCounts = createServerFn({ method: "POST" })
       admin
         .from("tournaments")
         .select("*", { count: "exact", head: true })
-.eq("store_id", player.home_store_id as string)
+        .eq("store_id", player.home_store_id as string)
         .eq("status", "DRAFT"),
       admin
         .from("tournaments")
         .select("*", { count: "exact", head: true })
-.eq("store_id", player.home_store_id as string)
+        .eq("store_id", player.home_store_id as string)
         .eq("status", "APPROVED"),
       admin
         .from("round_appeals")
         .select("*", { count: "exact", head: true })
-.eq("store_id", player.home_store_id as string)
+        .eq("store_id", player.home_store_id as string)
         .eq("status", "pending"),
     ]);
 
@@ -182,4 +194,3 @@ export const getOrganizerBadgeCounts = createServerFn({ method: "POST" })
   });
 
 // ---------- Organizer read-only calendar (scoped to home_store) ----------
-

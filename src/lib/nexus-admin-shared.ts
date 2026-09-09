@@ -1,10 +1,25 @@
 import { createServerFn } from "@tanstack/react-start";
+import { z } from "zod";
 import { getNexusAdmin, failDb } from "./nexus-admin.server";
 import { requireNexusUser } from "./nexus-auth.middleware";
 import type { Database, Json } from "./database.types";
 
 export type TournamentStatus = Database["public"]["Enums"]["tournament_status"];
 
+// Store URLs (website, google_maps_url) get rendered as <a href> on public
+// pages. Without a protocol allowlist, a manager/organizer could persist
+// "javascript:..." and turn the link into stored XSS for any visitor. Reject
+// everything but http(s) instead of relying on z.string().url(), which
+// happily accepts "javascript:alert(1)" as a well-formed URL.
+export const httpUrlSchema = z
+  .string()
+  .max(500)
+  .trim()
+  .optional()
+  .or(z.literal(""))
+  .refine((v) => !v || /^https?:\/\//i.test(v), {
+    message: "La URL debe iniciar con http:// o https://",
+  });
 
 // ---------- Audit log helper ----------
 export async function logAction(
@@ -69,7 +84,9 @@ function getWeekKey(dateStr: string): string {
   monday.setUTCDate(date.getUTCDate() + diff);
   const year = monday.getUTCFullYear();
   const startOfYear = new Date(Date.UTC(year, 0, 1));
-  const weekNum = Math.ceil(((monday.getTime() - startOfYear.getTime()) / 86400000 + startOfYear.getUTCDay() + 1) / 7);
+  const weekNum = Math.ceil(
+    ((monday.getTime() - startOfYear.getTime()) / 86400000 + startOfYear.getUTCDay() + 1) / 7,
+  );
   return `${year}-W${String(weekNum).padStart(2, "0")}`;
 }
 
@@ -123,7 +140,9 @@ export async function recomputeSnapshot(
   if (re) failDb(re);
 
   // Build a map from tournament_id -> tournament_date
-  const tournamentDateMap = new Map<string, string>((tournaments ?? []).map((t) => [t.id, t.tournament_date]));
+  const tournamentDateMap = new Map<string, string>(
+    (tournaments ?? []).map((t) => [t.id, t.tournament_date]),
+  );
 
   // Group results by player_id -> week -> list of results
   type RawResult = {
@@ -167,7 +186,9 @@ export async function recomputeSnapshot(
     for (const weekResults of weekMap.values()) {
       a.played += weekResults.length;
 
-      const top2 = weekResults.sort((x, y) => (y.points_earned ?? 0) - (x.points_earned ?? 0)).slice(0, 2);
+      const top2 = weekResults
+        .sort((x, y) => (y.points_earned ?? 0) - (x.points_earned ?? 0))
+        .slice(0, 2);
 
       for (const r of top2) {
         a.total_points += r.points_earned ?? 0;

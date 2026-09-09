@@ -1,0 +1,96 @@
+- generic [ref=e2]:
+  - generic [ref=e3]:
+    - banner [ref=e4]:
+      - link "Trading Card Nexus" [ref=e7] [cursor=pointer]:
+        - /url: /
+        - generic [ref=e15]: Trading Card
+        - generic [ref=e16]: Nexus
+    - generic [ref=e18]:
+      - complementary [ref=e19]
+      - main [ref=e20]:
+        - link "Volver al directorio" [ref=e22] [cursor=pointer]:
+          - /url: /stores
+        - generic [ref=e25]:
+          - generic [ref=e27]:
+            - paragraph [ref=e28]: Zona Monterrey
+            - 'heading "Tienda Mock #1" [level=1] [ref=e29]'
+          - paragraph [ref=e30]: Alfonso Reyes 255, Monterrey, Nuevo Leon
+          - paragraph [ref=e34]: Tu tienda especializada en juegos de cartas coleccionables y productos geek. Ofrecemos los mejores productos de Magic, Pokémon, Yu-Gi-Oh! y más.
+          - generic [ref=e35]: One Piece Card Game
+          - generic [ref=e37]:
+            - paragraph [ref=e39]: Lun-Dom 13:00-23:00
+            - paragraph [ref=e44]: "+528120802420"
+          - generic [ref=e47]:
+            - link "Cómo llegar" [ref=e48] [cursor=pointer]:
+              - /url: https://maps.app.goo.gl/zNH3PWtt6RAhABby9
+            - link [ref=e51] [cursor=pointer]:
+              - /url: https://instagram.com/geek.collectormx
+            - link [ref=e55] [cursor=pointer]:
+              - /url: https://geekcollector.com/
+            - link [ref=e59] [cursor=pointer]:
+              - /url: https://x.com/geekcollectormx
+            - link [ref=e62] [cursor=pointer]:
+              - /url: https://twitch.tv/geekcollectormty
+          - iframe [ref=e65]:
+            - generic [ref=f1e1]:
+              - link "Open in Maps (opens in new tab)" [ref=f1e4] [cursor=pointer]:
+                - /url: about:invalid#zClosurez
+                - text: Open in Maps
+              - generic [ref=f1e9]:
+                - region "Map" [ref=f1e10]
+                - iframe [aria-hidden] [ref=f1e39]
+        - generic [ref=e67]:
+          - heading "Calendario de torneos" [level=2] [ref=e68]
+          - generic [ref=e69]:
+            - button [ref=e70]
+            - generic [ref=e73]: 7 sep — 13 sep 2026
+            - button [ref=e74]
+            - button "Hoy" [ref=e77]
+        - table [ref=e91]:
+          - rowgroup [ref=e92]:
+            - row [ref=e93]:
+              - columnheader "#" [ref=e94]
+              - columnheader "Tag" [ref=e95]
+              - columnheader "Pts" [ref=e96]
+              - columnheader "Trn" [ref=e97]
+              - columnheader "W" [ref=e98]
+              - columnheader "OMW%" [ref=e99]
+          - rowgroup [ref=e100]:
+            - row [ref=e101]:
+              - cell [ref=e102]
+              - cell [ref=e104]
+              - cell [ref=e106]
+              - cell [ref=e109]
+              - cell [ref=e112]
+              - cell [ref=e115]
+            - row [ref=e118]:
+              - cell [ref=e119]
+              - cell [ref=e121]
+              - cell [ref=e123]
+              - cell [ref=e126]
+              - cell [ref=e129]
+              - cell [ref=e132]
+            - row [ref=e135]:
+              - cell [ref=e136]
+              - cell [ref=e138]
+              - cell [ref=e140]
+              - cell [ref=e143]
+              - cell [ref=e146]
+              - cell [ref=e149]
+            - row [ref=e152]:
+              - cell [ref=e153]
+              - cell [ref=e155]
+              - cell [ref=e157]
+              - cell [ref=e160]
+              - cell [ref=e163]
+              - cell [ref=e166]
+            - row [ref=e169]:
+              - cell [ref=e170]
+              - cell [ref=e172]
+              - cell [ref=e174]
+              - cell [ref=e177]
+              - cell [ref=e180]
+              - cell [ref=e183]
+        - heading "Historial de torneos" [level=2] [ref=e187]
+      - complementary [ref=e193]
+  - region "Notifications alt+T"

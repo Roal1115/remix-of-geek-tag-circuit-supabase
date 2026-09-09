@@ -1,0 +1,46 @@
+- generic [ref=e2]:
+  - generic [ref=e3]:
+    - banner [ref=e4]:
+      - link "Trading Card Nexus" [ref=e7] [cursor=pointer]:
+        - /url: /
+        - generic [ref=e15]: Trading Card
+        - generic [ref=e16]: Nexus
+    - generic [ref=e18]:
+      - complementary
+      - main [ref=e19]:
+        - generic [ref=e20]:
+          - paragraph [ref=e22]: Temporada III · Patrocinado por Bandai · Wizards · TPCI
+          - heading "Circuito Nacional" [level=1] [ref=e23]
+          - paragraph [ref=e24]: El sistema oficial de ranking para TCG competitivo. Escala la tabla. Gana tu boleto al Mundial.
+        - generic [ref=e26]:
+          - generic [ref=e27] [cursor=pointer]:
+            - combobox [ref=e28]:
+              - generic [ref=e29]: TCG
+            - combobox [aria-hidden] [ref=e32]
+            - combobox [ref=e33]:
+              - generic [ref=e34]: Ciudad
+            - combobox [aria-hidden] [ref=e37]
+            - combobox [ref=e38]:
+              - generic [ref=e39]: Tienda
+            - combobox [aria-hidden] [ref=e42]
+            - combobox [ref=e43]:
+              - generic [ref=e44]: Mes
+            - combobox [aria-hidden] [ref=e47]
+          - textbox "Buscar Geek Tag…" [ref=e49]
+        - tablist "Periodo del ranking" [ref=e51]:
+          - tab "Mensual" [selected] [ref=e52] [cursor=pointer]
+          - tab "Semestral" [ref=e53] [cursor=pointer]
+        - generic [ref=e54]:
+          - generic [ref=e57]:
+            - heading "Ranking Mensual" [level=2] [ref=e65]
+            - generic [ref=e66]: —
+          - generic [ref=e67]:
+            - generic [ref=e68]: "#"
+            - generic [ref=e69]: Tag
+            - generic [ref=e70]: Ciudad
+            - generic [ref=e71]: Pts
+            - generic "Torneos jugados" [ref=e72]: Trn
+            - generic "Victorias" [ref=e73]: W
+            - generic "Opponent Match Win %" [ref=e74]: OMW%
+      - complementary
+  - region "Notifications alt+T"

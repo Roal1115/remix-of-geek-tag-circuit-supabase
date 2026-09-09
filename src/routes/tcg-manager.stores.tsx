@@ -25,6 +25,7 @@ import {
 } from "@/lib/nexus-manager.functions";
 import { StoreSchedulesDialog } from "@/components/admin/StoreSchedulesDialog";
 import { StoreEditModal } from "@/components/stores/StoreEditModal";
+import { safeHref } from "@/lib/utils";
 
 export const Route = createFileRoute("/tcg-manager/stores")({
   head: () => ({ meta: [{ title: "Tiendas — TCG Manager" }] }),
@@ -111,9 +112,7 @@ function ManagerStoresPage() {
   return (
     <div className="space-y-6">
       <header>
-        <p className="text-xs font-semibold uppercase tracking-[0.3em] text-primary">
-          Red
-        </p>
+        <p className="text-xs font-semibold uppercase tracking-[0.3em] text-primary">Red</p>
         <h1 className="mt-2 text-3xl font-bold text-white">Tiendas a tu cargo</h1>
         <p className="mt-1 text-sm text-gray-400">
           Gestiona la información y los horarios de torneos de las tiendas que ofrecen tus TCGs.
@@ -122,10 +121,7 @@ function ManagerStoresPage() {
 
       <div className="glass flex flex-wrap items-center gap-3 rounded-2xl p-3">
         <div className="relative min-w-[220px] flex-1">
-          <Search
-            size={14}
-            className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500"
-          />
+          <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500" />
           <Input
             value={searchRaw}
             onChange={(e) => setSearchRaw(e.target.value)}
@@ -159,11 +155,7 @@ function ManagerStoresPage() {
                   >
                     Editar
                   </button>
-                  <Button
-                    size="sm"
-                    variant="outline"
-                    onClick={() => setSchedStore(s)}
-                  >
+                  <Button size="sm" variant="outline" onClick={() => setSchedStore(s)}>
                     <CalendarDays size={13} className="mr-1.5" />
                     Torneos
                   </Button>
@@ -199,9 +191,9 @@ function ManagerStoresPage() {
                 </div>
                 <div className="flex items-center gap-2">
                   <MapIcon size={12} className="text-gray-500 shrink-0" />
-                  {s.google_maps_url ? (
+                  {safeHref(s.google_maps_url) ? (
                     <a
-                      href={s.google_maps_url}
+                      href={safeHref(s.google_maps_url)}
                       target="_blank"
                       rel="noreferrer"
                       className="text-primary hover:underline"
@@ -226,9 +218,9 @@ function ManagerStoresPage() {
                       <Instagram size={12} /> Instagram
                     </a>
                   )}
-                  {s.website && (
+                  {safeHref(s.website) && (
                     <a
-                      href={s.website}
+                      href={safeHref(s.website)}
                       target="_blank"
                       rel="noreferrer"
                       className="inline-flex items-center gap-1 text-xs text-gray-300 hover:text-primary"

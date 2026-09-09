@@ -1,0 +1,113 @@
+- generic [ref=f24e2]:
+  - generic [ref=f24e3]:
+    - banner [ref=f24e4]:
+      - generic [ref=f24e5]:
+        - link "Trading Card Nexus" [ref=f24e7] [cursor=pointer]:
+          - /url: /
+          - generic [ref=f24e15]: Trading Card
+          - generic [ref=f24e16]: Nexus
+        - button "One Piece Card Game" [ref=f24e200]
+        - link "Iniciar sesión" [ref=f24e204] [cursor=pointer]:
+          - /url: /login
+    - generic [ref=f24e443]:
+      - generic [ref=f24e444]:
+        - button "Volver" [ref=f24e445]
+        - link "Ver tienda" [ref=f24e448] [cursor=pointer]:
+          - /url: /stores/geek-collector
+      - generic [ref=f24e453]:
+        - generic [ref=f24e454]: One Piece Card Game
+        - 'heading "Tienda Mock #1" [level=1] [ref=f24e455]'
+        - generic [ref=f24e456]:
+          - generic [ref=f24e457]: Monterrey, Nuevo Leon
+          - generic [ref=f24e461]: 3 de septiembre de 2026
+          - generic [ref=f24e465]: Zona Monterrey
+        - generic [ref=f24e466]: 10 participantes
+        - button "Compartir" [ref=f24e469]
+      - 'link "Ver perfil de Tienda Mock #1 →" [ref=f24e476] [cursor=pointer]':
+        - /url: /stores/geek-collector
+      - generic [ref=f24e485]:
+        - generic [ref=f24e486]: 🏆 Campeón
+        - generic [ref=f24e487]: Wololol
+      - generic [ref=f24e488]:
+        - generic [ref=f24e489]:
+          - generic [ref=f24e490]: "#"
+          - generic [ref=f24e491]: Jugador
+          - generic [ref=f24e492]: V/D/E
+          - generic [ref=f24e493]: OMW%
+          - generic [ref=f24e494]: PTS
+        - generic [ref=f24e495]:
+          - generic [ref=f24e496]: "1"
+          - link "Wololol" [ref=f24e499] [cursor=pointer]:
+            - /url: /players/Wololol
+          - generic [ref=f24e500]: —
+          - generic [ref=f24e501]: 38.5%
+          - generic [ref=f24e502]: "100.00"
+        - generic [ref=f24e503]:
+          - generic [ref=f24e504]: "2"
+          - link "EL GEORCH | Mandarinas" [ref=f24e507] [cursor=pointer]:
+            - /url: /players/EL%20GEORCH%20|%20Mandarinas
+          - generic [ref=f24e508]: —
+          - generic [ref=f24e509]: 54.5%
+          - generic [ref=f24e510]: "80.00"
+        - generic [ref=f24e511]:
+          - generic [ref=f24e512]: "3"
+          - link "JESUS RIOS /Smile" [ref=f24e515] [cursor=pointer]:
+            - /url: /players/JESUS%20RIOS%20%2FSmile
+          - generic [ref=f24e516]: —
+          - generic [ref=f24e517]: 35.9%
+          - generic [ref=f24e518]: "80.00"
+        - generic [ref=f24e519]:
+          - generic [ref=f24e520]: "4"
+          - link "One2p" [ref=f24e523] [cursor=pointer]:
+            - /url: /players/One2p
+          - generic [ref=f24e524]: —
+          - generic [ref=f24e525]: 39.4%
+          - generic [ref=f24e526]: "60.00"
+        - generic [ref=f24e527]:
+          - generic [ref=f24e528]: "5"
+          - link "Capu | Smile" [ref=f24e531] [cursor=pointer]:
+            - /url: /players/Capu%20|%20Smile
+          - generic [ref=f24e532]: —
+          - generic [ref=f24e533]: 65.9%
+          - generic [ref=f24e534]: "40.00"
+        - generic [ref=f24e535]:
+          - generic [ref=f24e536]: "6"
+          - link "Scooby32" [ref=f24e539] [cursor=pointer]:
+            - /url: /players/Scooby32
+          - generic [ref=f24e540]: —
+          - generic [ref=f24e541]: 46.6%
+          - generic [ref=f24e542]: "40.00"
+        - generic [ref=f24e543]:
+          - generic [ref=f24e544]: "7"
+          - link "AC UDT | Bruno" [ref=f24e547] [cursor=pointer]:
+            - /url: /players/AC%20UDT%20|%20Bruno
+          - generic [ref=f24e548]: —
+          - generic [ref=f24e549]: 38.1%
+          - generic [ref=f24e550]: "40.00"
+        - generic [ref=f24e551]:
+          - generic [ref=f24e552]: "8"
+          - link "Pato | Mandarinas" [ref=f24e555] [cursor=pointer]:
+            - /url: /players/Pato%20|%20Mandarinas
+          - generic [ref=f24e556]: —
+          - generic [ref=f24e557]: 61.2%
+          - generic [ref=f24e558]: "26.67"
+        - generic [ref=f24e559]:
+          - generic [ref=f24e560]: "9"
+          - link "Andrés | Mandarinas" [ref=f24e563] [cursor=pointer]:
+            - /url: /players/Andr%C3%A9s%20|%20Mandarinas
+          - generic [ref=f24e564]: —
+          - generic [ref=f24e565]: 58.0%
+          - generic [ref=f24e566]: "20.00"
+        - generic [ref=f24e567]:
+          - generic [ref=f24e568]: "10"
+          - link "Umichin" [ref=f24e571] [cursor=pointer]:
+            - /url: /players/Umichin
+          - generic [ref=f24e572]: —
+          - generic [ref=f24e573]: 50.6%
+          - generic [ref=f24e574]: "20.00"
+      - generic [ref=f24e575]:
+        - heading "¿Compites en este circuito?" [level=3] [ref=f24e576]
+        - paragraph [ref=f24e577]: Registra tus partidas, sigue tu ranking nacional y consulta el meta.
+        - link "Crear mi cuenta" [ref=f24e578] [cursor=pointer]:
+          - /url: /signup
+  - region "Notifications alt+T"

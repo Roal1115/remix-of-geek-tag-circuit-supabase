@@ -1,0 +1,97 @@
+- generic [ref=f4e2]:
+  - generic [ref=f4e3]:
+    - banner [ref=f4e4]:
+      - link "Trading Card Nexus" [ref=f4e7] [cursor=pointer]:
+        - /url: /
+        - generic [ref=f4e15]: Trading Card
+        - generic [ref=f4e16]: Nexus
+    - generic [ref=f4e18]:
+      - complementary [ref=f4e19]
+      - main [ref=f4e20]:
+        - link "Volver al directorio" [ref=f4e22] [cursor=pointer]:
+          - /url: /stores
+        - generic [ref=f4e25]:
+          - generic [ref=f4e27]:
+            - paragraph [ref=f4e28]: Zona Monterrey
+            - 'heading "Tienda Mock #1" [level=1] [ref=f4e29]'
+          - paragraph [ref=f4e30]: Alfonso Reyes 255, Monterrey, Nuevo Leon
+          - paragraph [ref=f4e34]: Tu tienda especializada en juegos de cartas coleccionables y productos geek. Ofrecemos los mejores productos de Magic, Pokémon, Yu-Gi-Oh! y más.
+          - generic [ref=f4e35]: One Piece Card Game
+          - generic [ref=f4e37]:
+            - paragraph [ref=f4e39]: Lun-Dom 13:00-23:00
+            - paragraph [ref=f4e44]: "+528120802420"
+          - generic [ref=f4e47]:
+            - link "Cómo llegar" [ref=f4e49] [cursor=pointer]:
+              - /url: https://maps.app.goo.gl/zNH3PWtt6RAhABby9
+            - generic [ref=f4e52]:
+              - link [ref=f4e53] [cursor=pointer]:
+                - /url: https://instagram.com/geek.collectormx
+              - link [ref=f4e57] [cursor=pointer]:
+                - /url: https://geekcollector.com/
+              - link [ref=f4e61] [cursor=pointer]:
+                - /url: https://x.com/geekcollectormx
+              - link [ref=f4e64] [cursor=pointer]:
+                - /url: https://twitch.tv/geekcollectormty
+          - iframe [ref=f4e67]:
+            - generic [ref=f5e1]:
+              - link "Open in Maps (opens in new tab)" [ref=f5e4] [cursor=pointer]:
+                - /url: about:invalid#zClosurez
+                - text: Open in Maps
+              - generic [ref=f5e9]:
+                - region "Map" [ref=f5e10]
+                - iframe [aria-hidden] [ref=f5e31]
+        - generic [ref=f4e69]:
+          - heading "Calendario de torneos" [level=2] [ref=f4e70]
+          - generic [ref=f4e71]:
+            - button [ref=f4e72]
+            - generic [ref=f4e75]: 7 sep — 13 sep 2026
+            - button [ref=f4e76]
+            - button "Hoy" [ref=f4e79]
+        - table [ref=f4e93]:
+          - rowgroup [ref=f4e94]:
+            - row [ref=f4e95]:
+              - columnheader "#" [ref=f4e96]
+              - columnheader "Tag" [ref=f4e97]
+              - columnheader "Pts" [ref=f4e98]
+              - columnheader "Trn" [ref=f4e99]
+              - columnheader "W" [ref=f4e100]
+              - columnheader "OMW%" [ref=f4e101]
+          - rowgroup [ref=f4e102]:
+            - row [ref=f4e103]:
+              - cell [ref=f4e104]
+              - cell [ref=f4e106]
+              - cell [ref=f4e108]
+              - cell [ref=f4e111]
+              - cell [ref=f4e114]
+              - cell [ref=f4e117]
+            - row [ref=f4e120]:
+              - cell [ref=f4e121]
+              - cell [ref=f4e123]
+              - cell [ref=f4e125]
+              - cell [ref=f4e128]
+              - cell [ref=f4e131]
+              - cell [ref=f4e134]
+            - row [ref=f4e137]:
+              - cell [ref=f4e138]
+              - cell [ref=f4e140]
+              - cell [ref=f4e142]
+              - cell [ref=f4e145]
+              - cell [ref=f4e148]
+              - cell [ref=f4e151]
+            - row [ref=f4e154]:
+              - cell [ref=f4e155]
+              - cell [ref=f4e157]
+              - cell [ref=f4e159]
+              - cell [ref=f4e162]
+              - cell [ref=f4e165]
+              - cell [ref=f4e168]
+            - row [ref=f4e171]:
+              - cell [ref=f4e172]
+              - cell [ref=f4e174]
+              - cell [ref=f4e176]
+              - cell [ref=f4e179]
+              - cell [ref=f4e182]
+              - cell [ref=f4e185]
+        - heading "Historial de torneos" [level=2] [ref=f4e189]
+      - complementary [ref=f4e195]
+  - region "Notifications alt+T"

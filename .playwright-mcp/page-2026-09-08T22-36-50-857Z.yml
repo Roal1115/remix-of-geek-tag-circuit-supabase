@@ -1,0 +1,99 @@
+- generic [ref=f1e2]:
+  - generic [ref=f1e3]:
+    - banner [ref=f1e4]:
+      - generic [ref=f1e5]:
+        - link "Trading Card Nexus" [ref=f1e7] [cursor=pointer]:
+          - /url: /
+          - generic [ref=f1e15]: Trading Card
+          - generic [ref=f1e16]: Nexus
+        - link "Iniciar sesión" [ref=f1e18] [cursor=pointer]:
+          - /url: /login
+    - generic [ref=f1e20]:
+      - complementary [ref=f1e21]
+      - main [ref=f1e22]:
+        - link "Volver al directorio" [ref=f1e24] [cursor=pointer]:
+          - /url: /stores
+        - generic [ref=f1e27]:
+          - generic [ref=f1e29]:
+            - paragraph [ref=f1e30]: Zona Monterrey
+            - 'heading "Tienda Mock #1" [level=1] [ref=f1e31]'
+          - paragraph [ref=f1e32]: Alfonso Reyes 255, Monterrey, Nuevo Leon
+          - paragraph [ref=f1e36]: Tu tienda especializada en juegos de cartas coleccionables y productos geek. Ofrecemos los mejores productos de Magic, Pokémon, Yu-Gi-Oh! y más.
+          - generic [ref=f1e37]: One Piece Card Game
+          - generic [ref=f1e39]:
+            - paragraph [ref=f1e41]: Lun-Dom 13:00-23:00
+            - paragraph [ref=f1e46]: "+528120802420"
+          - generic [ref=f1e49]:
+            - link "Cómo llegar" [ref=f1e50] [cursor=pointer]:
+              - /url: https://maps.app.goo.gl/zNH3PWtt6RAhABby9
+            - link [ref=f1e53] [cursor=pointer]:
+              - /url: https://instagram.com/geek.collectormx
+            - link [ref=f1e57] [cursor=pointer]:
+              - /url: https://geekcollector.com/
+            - link [ref=f1e61] [cursor=pointer]:
+              - /url: https://x.com/geekcollectormx
+            - link [ref=f1e64] [cursor=pointer]:
+              - /url: https://twitch.tv/geekcollectormty
+          - iframe [ref=f1e67]:
+            - generic [ref=f2e1]:
+              - link "Open in Maps (opens in new tab)" [ref=f2e4] [cursor=pointer]:
+                - /url: about:invalid#zClosurez
+                - text: Open in Maps
+              - generic [ref=f2e9]:
+                - region "Map" [ref=f2e10]
+                - iframe [aria-hidden] [ref=f2e31]
+        - generic [ref=f1e69]:
+          - heading "Calendario de torneos" [level=2] [ref=f1e70]
+          - generic [ref=f1e71]:
+            - button [ref=f1e72]
+            - generic [ref=f1e75]: 7 sep — 13 sep 2026
+            - button [ref=f1e76]
+            - button "Hoy" [ref=f1e79]
+        - table [ref=f1e93]:
+          - rowgroup [ref=f1e94]:
+            - row [ref=f1e95]:
+              - columnheader "#" [ref=f1e96]
+              - columnheader "Tag" [ref=f1e97]
+              - columnheader "Pts" [ref=f1e98]
+              - columnheader "Trn" [ref=f1e99]
+              - columnheader "W" [ref=f1e100]
+              - columnheader "OMW%" [ref=f1e101]
+          - rowgroup [ref=f1e102]:
+            - row [ref=f1e103]:
+              - cell [ref=f1e104]
+              - cell [ref=f1e106]
+              - cell [ref=f1e108]
+              - cell [ref=f1e111]
+              - cell [ref=f1e114]
+              - cell [ref=f1e117]
+            - row [ref=f1e120]:
+              - cell [ref=f1e121]
+              - cell [ref=f1e123]
+              - cell [ref=f1e125]
+              - cell [ref=f1e128]
+              - cell [ref=f1e131]
+              - cell [ref=f1e134]
+            - row [ref=f1e137]:
+              - cell [ref=f1e138]
+              - cell [ref=f1e140]
+              - cell [ref=f1e142]
+              - cell [ref=f1e145]
+              - cell [ref=f1e148]
+              - cell [ref=f1e151]
+            - row [ref=f1e154]:
+              - cell [ref=f1e155]
+              - cell [ref=f1e157]
+              - cell [ref=f1e159]
+              - cell [ref=f1e162]
+              - cell [ref=f1e165]
+              - cell [ref=f1e168]
+            - row [ref=f1e171]:
+              - cell [ref=f1e172]
+              - cell [ref=f1e174]
+              - cell [ref=f1e176]
+              - cell [ref=f1e179]
+              - cell [ref=f1e182]
+              - cell [ref=f1e185]
+        - heading "Historial de torneos" [level=2] [ref=f1e189]
+      - complementary [ref=f1e195]
+  - region "Notifications alt+T"

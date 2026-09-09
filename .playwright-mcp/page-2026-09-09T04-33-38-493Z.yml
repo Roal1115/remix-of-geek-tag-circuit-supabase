@@ -1,0 +1,197 @@
+- generic [ref=f14e2]:
+  - generic [ref=f14e3]:
+    - banner [ref=f14e4]:
+      - generic [ref=f14e5]:
+        - link "Trading Card Nexus" [ref=f14e7] [cursor=pointer]:
+          - /url: /
+          - generic [ref=f14e15]: Trading Card
+          - generic [ref=f14e16]: Nexus
+        - button "One Piece Card Game" [ref=f14e198]
+        - link "Iniciar sesión" [ref=f14e202] [cursor=pointer]:
+          - /url: /login
+    - generic [ref=f14e18]:
+      - complementary [ref=f14e19]
+      - main [ref=f14e20]:
+        - link "Volver al directorio" [ref=f14e22] [cursor=pointer]:
+          - /url: /stores
+        - generic [ref=f14e25]:
+          - generic [ref=f14e27]:
+            - paragraph [ref=f14e28]: Zona Monterrey
+            - 'heading "Tienda Mock #1" [level=1] [ref=f14e29]'
+          - paragraph [ref=f14e30]: Tu tienda especializada en juegos de cartas coleccionables y productos geek. Ofrecemos los mejores productos de Magic, Pokémon, Yu-Gi-Oh! y más.
+          - generic [ref=f14e31]: One Piece Card Game
+          - generic [ref=f14e33]:
+            - generic [ref=f14e34]:
+              - link "Cómo llegar" [ref=f14e35] [cursor=pointer]:
+                - /url: https://maps.app.goo.gl/zNH3PWtt6RAhABby9
+              - link "Ver Liga Interna" [ref=f14e203] [cursor=pointer]:
+                - /url: "#liga-interna"
+            - generic [ref=f14e38]:
+              - link [ref=f14e39] [cursor=pointer]:
+                - /url: https://instagram.com/geek.collectormx
+              - link [ref=f14e43] [cursor=pointer]:
+                - /url: https://geekcollector.com/
+              - link [ref=f14e47] [cursor=pointer]:
+                - /url: https://x.com/geekcollectormx
+              - link [ref=f14e50] [cursor=pointer]:
+                - /url: https://twitch.tv/geekcollectormty
+        - generic [ref=f14e53]:
+          - heading "Ubicación y horario" [level=2] [ref=f14e54]
+          - generic [ref=f14e55]:
+            - paragraph [ref=f14e56]: Alfonso Reyes 255, Monterrey, Nuevo Leon
+            - paragraph [ref=f14e60]: Lun-Dom 13:00-23:00
+            - paragraph [ref=f14e64]: "+528120802420"
+          - button "Ocultar mapa" [active] [ref=f14e436]
+          - iframe [ref=f14e437]:
+            - generic [ref=f15e1]:
+              - link "Open in Maps (opens in new tab)" [ref=f15e4] [cursor=pointer]:
+                - /url: about:invalid#zClosurez
+                - text: Open in Maps
+              - generic [ref=f15e9]:
+                - region "Map" [ref=f15e10]
+                - iframe [aria-hidden] [ref=f15e31]
+        - generic [ref=f14e68]:
+          - generic [ref=f14e69]:
+            - heading "Calendario de torneos" [level=2] [ref=f14e70]
+            - generic [ref=f14e71]:
+              - button [ref=f14e72]
+              - generic [ref=f14e75]: 7 sep — 13 sep 2026
+              - button [ref=f14e76]
+              - button "Hoy" [ref=f14e79]
+          - generic [ref=f14e210]: One Piece Card Game
+          - generic [ref=f14e214]:
+            - generic [ref=f14e215]:
+              - generic [ref=f14e217]:
+                - generic [ref=f14e218]: Lun
+                - generic [ref=f14e219]: "7"
+              - generic [ref=f14e220]:
+                - generic [ref=f14e221]: Mar
+                - generic [ref=f14e222]: "8"
+              - generic [ref=f14e223]:
+                - generic [ref=f14e224]: Mié
+                - generic [ref=f14e225]: "9"
+              - generic [ref=f14e226]:
+                - generic [ref=f14e227]: Jue
+                - generic [ref=f14e228]: "10"
+              - generic [ref=f14e229]:
+                - generic [ref=f14e230]: Vie
+                - generic [ref=f14e231]: "11"
+              - generic [ref=f14e232]:
+                - generic [ref=f14e233]: Sáb
+                - generic [ref=f14e234]: "12"
+              - generic [ref=f14e235]:
+                - generic [ref=f14e236]: Dom
+                - generic [ref=f14e237]: "13"
+            - generic [ref=f14e238]:
+              - generic [ref=f14e239]: 13:00
+              - button [ref=f14e246]:
+                - paragraph [ref=f14e247]: "Tienda Mock #1"
+                - paragraph [ref=f14e248]: One Piece Card Game
+                - paragraph [ref=f14e249]: Prueba Verano liga interna
+            - generic [ref=f14e251]: 14:00
+            - generic [ref=f14e260]: 15:00
+            - generic [ref=f14e269]: 16:00
+            - generic [ref=f14e278]: 17:00
+            - generic [ref=f14e287]: 18:00
+            - generic [ref=f14e296]: 19:00
+            - generic [ref=f14e305]:
+              - generic [ref=f14e306]: 20:00
+              - button [ref=f14e312]:
+                - paragraph [ref=f14e313]: "Tienda Mock #1"
+                - paragraph [ref=f14e314]: One Piece Card Game
+            - generic [ref=f14e317]: 21:00
+            - generic [ref=f14e326]: 22:00
+            - generic [ref=f14e335]: 23:00
+        - generic [ref=f14e345]:
+          - generic [ref=f14e346]:
+            - generic [ref=f14e347]:
+              - generic [ref=f14e348]:
+                - paragraph [ref=f14e349]: Liga Interna
+                - generic [ref=f14e350]: —
+              - heading "Prueba Verano liga interna" [level=2] [ref=f14e351]
+              - paragraph [ref=f14e352]: 2026-08-23 — 2026-12-26
+            - generic [ref=f14e353]: 110 días restantes
+          - generic [ref=f14e354]: Leaderboard
+          - paragraph [ref=f14e361]: Aún no hay resultados registrados en esta liga.
+          - generic [ref=f14e362]:
+            - generic [ref=f14e363]: Premios y Recompensas
+            - generic [ref=f14e368]:
+              - paragraph [ref=f14e370]: "1er Lugar: 1 Booster Box Op 17"
+              - paragraph [ref=f14e372]: "2do Lugar: Tacos Laredo"
+        - generic [ref=f14e188]:
+          - heading "Historial de torneos" [level=2] [ref=f14e189]
+          - table [ref=f14e373]:
+            - rowgroup [ref=f14e374]:
+              - row [ref=f14e375]:
+                - columnheader "Fecha" [ref=f14e376]
+                - columnheader "TCG" [ref=f14e377]
+                - columnheader "Jugadores" [ref=f14e378]
+            - rowgroup [ref=f14e379]:
+              - row [ref=f14e380]:
+                - cell "3 sep 2026" [ref=f14e381]
+                - cell [ref=f14e382]:
+                  - link "One Piece Card Game" [ref=f14e383] [cursor=pointer]:
+                    - /url: /tournaments/8f7d7228-181e-4a3e-a214-7c568316533c
+                - cell "10" [ref=f14e384]
+              - row [ref=f14e385]:
+                - cell "30 ago 2026" [ref=f14e386]
+                - cell "One Piece Card Game Prueba Verano liga interna" [ref=f14e387]:
+                  - link "One Piece Card Game" [ref=f14e388] [cursor=pointer]:
+                    - /url: /tournaments/2e8a804d-99d0-44bf-aeea-cf0ecde28088
+                  - generic [ref=f14e389]: Prueba Verano liga interna
+                - cell "12" [ref=f14e390]
+              - row [ref=f14e391]:
+                - cell "29 ago 2026" [ref=f14e392]
+                - cell [ref=f14e393]:
+                  - link "One Piece Card Game" [ref=f14e394] [cursor=pointer]:
+                    - /url: /tournaments/c821aeea-ea06-42b6-8a32-8ab03cf07a94
+                - cell "10" [ref=f14e395]
+              - row [ref=f14e396]:
+                - cell "26 ago 2026" [ref=f14e397]
+                - cell [ref=f14e398]:
+                  - link "One Piece Card Game" [ref=f14e399] [cursor=pointer]:
+                    - /url: /tournaments/37be4a73-92c9-4bb1-9d78-c3c88c83231c
+                - cell "16" [ref=f14e400]
+              - row [ref=f14e401]:
+                - cell "22 ago 2026" [ref=f14e402]
+                - cell [ref=f14e403]:
+                  - link "One Piece Card Game" [ref=f14e404] [cursor=pointer]:
+                    - /url: /tournaments/bc3fcb74-1c5f-4477-85e6-1c25a47bbfd9
+                - cell "17" [ref=f14e405]
+              - row [ref=f14e406]:
+                - cell "19 ago 2026" [ref=f14e407]
+                - cell [ref=f14e408]:
+                  - link "One Piece Card Game" [ref=f14e409] [cursor=pointer]:
+                    - /url: /tournaments/c7c54f09-1281-4070-88c8-05ea0e835658
+                - cell "10" [ref=f14e410]
+              - row [ref=f14e411]:
+                - cell "15 ago 2026" [ref=f14e412]
+                - cell [ref=f14e413]:
+                  - link "One Piece Card Game" [ref=f14e414] [cursor=pointer]:
+                    - /url: /tournaments/29421702-c2b6-4401-8f49-84eb9d5efe5f
+                - cell "17" [ref=f14e415]
+              - row [ref=f14e416]:
+                - cell "12 ago 2026" [ref=f14e417]
+                - cell [ref=f14e418]:
+                  - link "One Piece Card Game" [ref=f14e419] [cursor=pointer]:
+                    - /url: /tournaments/e6052d52-a698-4e35-88e1-5344eb47eec7
+                - cell "16" [ref=f14e420]
+              - row [ref=f14e421]:
+                - cell "8 ago 2026" [ref=f14e422]
+                - cell [ref=f14e423]:
+                  - link "One Piece Card Game" [ref=f14e424] [cursor=pointer]:
+                    - /url: /tournaments/6e523c19-dd6a-4fdf-9731-266a84b9eb19
+                - cell "11" [ref=f14e425]
+              - row [ref=f14e426]:
+                - cell "5 ago 2026" [ref=f14e427]
+                - cell [ref=f14e428]:
+                  - link "One Piece Card Game" [ref=f14e429] [cursor=pointer]:
+                    - /url: /tournaments/2db5ffee-2b98-4e1b-acda-66c9a463ec2f
+                - cell "16" [ref=f14e430]
+          - generic [ref=f14e431]:
+            - generic [ref=f14e432]: Página 1 de 2
+            - generic [ref=f14e433]:
+              - button "← Anterior" [disabled] [ref=f14e434]
+              - button "Siguiente →" [ref=f14e435]
+      - complementary [ref=f14e195]
+  - region "Notifications alt+T"

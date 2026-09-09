@@ -1,0 +1,38 @@
+- generic [ref=f1e2]:
+  - generic [ref=f1e5]:
+    - complementary [ref=f1e6]:
+      - link "Nexus Panel" [ref=f1e7] [cursor=pointer]:
+        - /url: /
+        - generic [ref=f1e15]:
+          - generic [ref=f1e16]: Nexus
+          - generic [ref=f1e17]: Panel
+      - navigation [ref=f1e18]:
+        - generic [ref=f1e19]:
+          - generic [ref=f1e20]: Moderación
+          - generic [ref=f1e21]:
+            - link "Torneos" [ref=f1e22] [cursor=pointer]:
+              - /url: /tcg-manager/tournaments-panel
+            - link "Historial de Torneos" [ref=f1e28] [cursor=pointer]:
+              - /url: /tcg-manager/history
+            - link "Mi Historial" [ref=f1e35] [cursor=pointer]:
+              - /url: /tcg-manager/my-history
+        - generic [ref=f1e42]:
+          - generic [ref=f1e43]: Red
+          - link "Tiendas" [ref=f1e45] [cursor=pointer]:
+            - /url: /tcg-manager/stores
+        - generic [ref=f1e52]:
+          - generic [ref=f1e53]: Circuito
+          - generic [ref=f1e54]:
+            - link "Analytics" [ref=f1e55] [cursor=pointer]:
+              - /url: /tcg-manager/analytics
+            - link "Calendario" [ref=f1e60] [cursor=pointer]:
+              - /url: /tcg-manager/calendar
+            - link "Subir Torneo" [ref=f1e65] [cursor=pointer]:
+              - /url: /tcg-manager/upload
+      - generic [ref=f1e71]:
+        - generic [ref=f1e72]:
+          - generic [ref=f1e73]: Sesión
+          - generic [ref=f1e74]: Manager
+        - button "Cerrar sesión" [ref=f1e75]
+    - main [ref=f1e81]
+  - region "Notifications alt+T"

@@ -5,6 +5,21 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
+// Render-time guard for user-supplied URLs (store website / google_maps_url)
+// going into <a href>. Server-side zod validation is the primary boundary;
+// this covers rows persisted before that validation existed and any future
+// sink that forgets to check. Uses the URL parser rather than a regex so
+// "javascript:alert(1)//https://x" style tricks can't sneak past a prefix test.
+export function safeHref(url: string | null | undefined): string | undefined {
+  if (!url) return undefined;
+  try {
+    const parsed = new URL(url.trim());
+    return parsed.protocol === "http:" || parsed.protocol === "https:" ? parsed.href : undefined;
+  } catch {
+    return undefined;
+  }
+}
+
 // "YYYY-MM-DD" usando los campos LOCALES de la fecha — nunca usar
 // toISOString() para esto: convierte a UTC y puede desplazar el día.
 export function toLocalDateStr(d: Date): string {

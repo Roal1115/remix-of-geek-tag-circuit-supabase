@@ -20,7 +20,6 @@ import { getMyFavoriteStores, toggleFavoriteStore } from "@/lib/nexus-player.fun
 import { useNexusRole } from "@/hooks/use-nexus-role";
 import { publicStoresQuery } from "@/lib/stores-queries";
 
-
 export const Route = createFileRoute("/stores/")({
   head: () => ({ meta: [{ title: "Tiendas — Nexus" }] }),
   loader: async ({ context }) => {
@@ -74,9 +73,7 @@ function FavoriteStar({
       }}
       disabled={isToggling}
       aria-label={
-        isFavorite
-          ? `Quitar ${storeName} de favoritas`
-          : `Marcar ${storeName} como favorita`
+        isFavorite ? `Quitar ${storeName} de favoritas` : `Marcar ${storeName} como favorita`
       }
       aria-pressed={isFavorite}
       className={`rounded-md p-1.5 transition disabled:opacity-40 ${
@@ -157,7 +154,6 @@ function StoreCardItem({
   );
 }
 
-
 const cardVariants = {
   hidden: { opacity: 0, y: 16 },
   show: { opacity: 1, y: 0, transition: { duration: 0.25 } },
@@ -187,9 +183,16 @@ function TiendasPage() {
       setFavoriteIds(new Set());
       return;
     }
+    // Guard contra respuestas fuera de orden — mismo fix que stores.$slug.tsx.
+    let cancelled = false;
     fetchFavorites()
-      .then((res: any) => setFavoriteIds(new Set(res.store_ids ?? [])))
+      .then((res: any) => {
+        if (!cancelled) setFavoriteIds(new Set(res.store_ids ?? []));
+      })
       .catch(() => {});
+    return () => {
+      cancelled = true;
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [player?.id]);
 
@@ -205,9 +208,7 @@ function TiendasPage() {
     try {
       await toggleFav({ data: { store_id: storeId } });
       toast.success(
-        wasFavorite
-          ? `${storeName} quitada de favoritas`
-          : `${storeName} agregada a favoritas`,
+        wasFavorite ? `${storeName} quitada de favoritas` : `${storeName} agregada a favoritas`,
       );
     } catch (e: any) {
       setFavoriteIds((prev) => {
@@ -242,14 +243,11 @@ function TiendasPage() {
       />
     ) : undefined;
 
-
   if (loading) {
     return (
       <div className="mx-auto max-w-7xl space-y-10 px-4 py-10 sm:px-6">
         <header className="space-y-2">
-          <p className="text-xs font-semibold uppercase tracking-[0.3em] text-primary">
-            Nexus
-          </p>
+          <p className="text-xs font-semibold uppercase tracking-[0.3em] text-primary">Nexus</p>
           <h1 className="text-4xl font-bold text-white">Tiendas del Circuito</h1>
         </header>
         <div className="space-y-8">
@@ -283,9 +281,7 @@ function TiendasPage() {
             <h2 className="text-xl font-bold uppercase tracking-wider text-white">
               Mis tiendas favoritas
             </h2>
-            <span className="text-xs text-gray-400">
-              {favoriteStores.length}/5
-            </span>
+            <span className="text-xs text-gray-400">{favoriteStores.length}/5</span>
           </div>
           <motion.div
             className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3"
@@ -303,9 +299,7 @@ function TiendasPage() {
       )}
 
       {player && favoriteStores.length > 0 && (
-        <h2 className="text-xl font-bold uppercase tracking-wider text-white">
-          Todas las tiendas
-        </h2>
+        <h2 className="text-xl font-bold uppercase tracking-wider text-white">Todas las tiendas</h2>
       )}
 
       {ZONES.map((zone) => {
@@ -329,7 +323,6 @@ function TiendasPage() {
           </section>
         );
       })}
-
 
       {stores.length === 0 && (
         <p className="text-sm text-gray-400">Aún no hay tiendas registradas.</p>

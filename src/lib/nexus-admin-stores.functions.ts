@@ -2,7 +2,7 @@ import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 import { failDb } from "./nexus-admin.server";
 import { requireNexusAdmin } from "./nexus-auth.middleware";
-import { logAction } from "./nexus-admin-shared";
+import { logAction, httpUrlSchema } from "./nexus-admin-shared";
 
 export const listStoresWithOrganizers = createServerFn({ method: "POST" })
   .middleware([requireNexusAdmin])
@@ -16,7 +16,10 @@ export const listStoresWithOrganizers = createServerFn({ method: "POST" })
         )
         .order("city", { ascending: true })
         .order("name", { ascending: true }),
-      admin.from("players").select("id, geek_tag, email, role, home_store_id").in("role", ["organizer", "admin"]),
+      admin
+        .from("players")
+        .select("id, geek_tag, email, role, home_store_id")
+        .in("role", ["organizer", "admin"]),
     ]);
 
     if (storesRes.error) failDb(storesRes.error);
@@ -66,11 +69,11 @@ export const createStore = createServerFn({ method: "POST" })
           slug: z.string().max(80).optional(),
           address: z.string().max(300).optional(),
           phone: z.string().max(20).optional(),
-          google_maps_url: z.string().url().optional().or(z.literal("")),
+          google_maps_url: httpUrlSchema,
           description: z.string().max(500).optional(),
           opening_hours: z.string().max(200).optional(),
           instagram: z.string().max(100).optional(),
-          website: z.string().max(200).optional(),
+          website: httpUrlSchema,
           twitter: z.string().max(100).optional(),
           twitch: z.string().max(100).optional(),
         })
@@ -102,7 +105,9 @@ export const createStore = createServerFn({ method: "POST" })
       .select("id")
       .maybeSingle();
     if (error) failDb(error);
-    await logAction(admin, player, "STORE_CREATED", "store", newStore?.id ?? null, data.name, { city: data.city });
+    await logAction(admin, player, "STORE_CREATED", "store", newStore?.id ?? null, data.name, {
+      city: data.city,
+    });
     return { ok: true };
   });
 
@@ -118,7 +123,10 @@ export const setStoreActive = createServerFn({ method: "POST" })
   )
   .handler(async ({ data, context }) => {
     const { admin } = context;
-    const { error } = await admin.from("stores").update({ is_active: data.is_active }).eq("id", data.store_id);
+    const { error } = await admin
+      .from("stores")
+      .update({ is_active: data.is_active })
+      .eq("id", data.store_id);
     if (error) failDb(error);
     return { ok: true };
   });
@@ -152,11 +160,11 @@ export const updateStore = createServerFn({ method: "POST" })
           country: z.string().min(2).max(2).optional(),
           address: z.string().max(300).optional(),
           phone: z.string().max(20).optional(),
-          google_maps_url: z.string().url().optional().or(z.literal("")),
+          google_maps_url: httpUrlSchema,
           description: z.string().max(500).optional(),
           opening_hours: z.string().max(200).optional(),
           instagram: z.string().max(100).optional(),
-          website: z.string().max(200).optional(),
+          website: httpUrlSchema,
           twitter: z.string().max(100).optional(),
           twitch: z.string().max(100).optional(),
         })
@@ -209,19 +217,34 @@ export const assignOrganizerToStore = createServerFn({ method: "POST" })
       .neq("id", data.player_id);
     if (ce) failDb(ce);
 
-    const { error } = await admin.from("players").update({ home_store_id: data.store_id }).eq("id", data.player_id);
+    const { error } = await admin
+      .from("players")
+      .update({ home_store_id: data.store_id })
+      .eq("id", data.player_id);
     if (error) failDb(error);
 
-    const { data: store } = await admin.from("stores").select("name").eq("id", data.store_id).maybeSingle();
+    const { data: store } = await admin
+      .from("stores")
+      .select("name")
+      .eq("id", data.store_id)
+      .maybeSingle();
     const { data: targetPlayer } = await admin
       .from("players")
       .select("geek_tag")
       .eq("id", data.player_id)
       .maybeSingle();
-    await logAction(admin, player, "ORGANIZER_ASSIGNED", "store", data.store_id, store?.name ?? data.store_id, {
-      player_id: data.player_id,
-      geek_tag: targetPlayer?.geek_tag,
-    });
+    await logAction(
+      admin,
+      player,
+      "ORGANIZER_ASSIGNED",
+      "store",
+      data.store_id,
+      store?.name ?? data.store_id,
+      {
+        player_id: data.player_id,
+        geek_tag: targetPlayer?.geek_tag,
+      },
+    );
     return { ok: true };
   });
 
@@ -248,16 +271,23 @@ export const getStoreSchedules = createServerFn({ method: "POST" })
 
 export const upsertStoreSchedule = createServerFn({ method: "POST" })
   .middleware([requireNexusAdmin])
-  .inputValidator((d: { store_id: string; game_id: string; day_of_week: number; start_time: string; id?: string }) =>
-    z
-      .object({
-        store_id: z.string().uuid(),
-        game_id: z.string().uuid(),
-        day_of_week: z.number().int().min(0).max(6),
-        start_time: z.string().regex(/^\d{2}:\d{2}$/),
-        id: z.string().uuid().optional(),
-      })
-      .parse(d),
+  .inputValidator(
+    (d: {
+      store_id: string;
+      game_id: string;
+      day_of_week: number;
+      start_time: string;
+      id?: string;
+    }) =>
+      z
+        .object({
+          store_id: z.string().uuid(),
+          game_id: z.string().uuid(),
+          day_of_week: z.number().int().min(0).max(6),
+          start_time: z.string().regex(/^\d{2}:\d{2}$/),
+          id: z.string().uuid().optional(),
+        })
+        .parse(d),
   )
   .handler(async ({ data, context }) => {
     const { admin } = context;
@@ -288,9 +318,14 @@ export const upsertStoreSchedule = createServerFn({ method: "POST" })
 
 export const deleteStoreSchedule = createServerFn({ method: "POST" })
   .middleware([requireNexusAdmin])
-  .inputValidator((d: { schedule_id: string }) => z.object({ schedule_id: z.string().uuid() }).parse(d))
+  .inputValidator((d: { schedule_id: string }) =>
+    z.object({ schedule_id: z.string().uuid() }).parse(d),
+  )
   .handler(async ({ data, context }) => {
-    const { error } = await context.admin.from("store_schedules").delete().eq("id", data.schedule_id);
+    const { error } = await context.admin
+      .from("store_schedules")
+      .delete()
+      .eq("id", data.schedule_id);
     if (error) failDb(error);
     return { success: true };
   });
