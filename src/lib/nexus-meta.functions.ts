@@ -130,7 +130,14 @@ export const getMetaStats = createServerFn({ method: "POST" })
 
     const leaderMap = new Map<
       string,
-      { total: number; wins: number; first: number; firstWins: number; second: number; secondWins: number }
+      {
+        total: number;
+        wins: number;
+        first: number;
+        firstWins: number;
+        second: number;
+        secondWins: number;
+      }
     >();
 
     for (const r of allRounds) {
@@ -240,7 +247,7 @@ export const getMetaMatchups = createServerFn({ method: "POST" })
     const leaders = Array.from(totals.entries())
       .filter(([, total]) => total >= MIN_ROUNDS)
       .sort((a, b) => b[1] - a[1])
-      .slice(0, 12)
+      .slice(0, 10)
       .map(([id]) => {
         const l = info.get(id);
         return {
@@ -248,6 +255,7 @@ export const getMetaMatchups = createServerFn({ method: "POST" })
           leader_name: l?.base_name ?? "Desconocido",
           leader_image: l?.card_image ?? null,
           card_set_id: l?.card_set_id ?? null,
+          colors: (l?.colors ?? []) as string[],
         };
       });
 

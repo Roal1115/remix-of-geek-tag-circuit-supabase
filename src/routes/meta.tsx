@@ -7,6 +7,7 @@ import { getMetaMatchups } from "@/lib/nexus-meta.functions";
 import { metaFilterOptionsQuery, metaQuery, type MetaFilters } from "@/lib/meta-queries";
 import { SkeletonBlock } from "@/components/ui/skeleton-loader";
 import { BlockSelect } from "@/components/ui/block-select";
+import { shortLeaderName, setBadge } from "@/lib/leader-display";
 
 const DEFAULT_GAME_ID = "5b608762-d0a3-4a93-9739-e5cd150b01cd";
 const DEFAULT_FILTERS: MetaFilters = {
@@ -338,6 +339,27 @@ function heatColor(wr: number): string {
 
 function MatchupHeatmap({ data }: { data: MatchupData }) {
   const { leaders, matchups } = data;
+  // Foco desktop: click en una fila/columna "pinea" ese líder — resalta su
+  // fila+columna y atenúa el resto, así el ojo no tiene que sostener dos
+  // posiciones en memoria mientras traza la intersección.
+  const [activeId, setActiveId] = useState<string | null>(null);
+  const toggleActive = (id: string) => setActiveId((cur) => (cur === id ? null : id));
+
+  // Mobile: explorador enfocado en un líder (lista, no matriz) — a 375px de
+  // ancho ni siquiera 6 columnas caben a tamaño legible, así que en vez de
+  // encoger la matriz mostramos la fila de un líder como lista ordenada.
+  const [selectedId, setSelectedId] = useState<string>(leaders[0]?.leader_id ?? "");
+  const selectedLeader = leaders.find((l) => l.leader_id === selectedId) ?? leaders[0];
+  const selectedRow = selectedLeader
+    ? leaders
+        .filter((l) => l.leader_id !== selectedLeader.leader_id)
+        .map((opp) => ({ opp, cell: matchups[`${selectedLeader.leader_id}|${opp.leader_id}`] }))
+        .filter((r): r is { opp: (typeof leaders)[number]; cell: NonNullable<typeof r.cell> } =>
+          Boolean(r.cell),
+        )
+        .sort((a, b) => b.cell.win_rate - a.cell.win_rate)
+    : [];
+
   return (
     <section className="mt-10">
       <header className="mb-4">
@@ -346,28 +368,44 @@ function MatchupHeatmap({ data }: { data: MatchupData }) {
         </p>
         <h2 className="mt-1 text-xl font-bold text-white">Matriz de enfrentamientos</h2>
         <p className="mt-1 text-sm text-gray-400">
-          Win rate del líder de la fila contra el líder de la columna. Mínimo 3 rondas por
-          matchup.
+          Win rate del líder de la fila contra el líder de la columna. Mínimo 3 rondas por matchup.
         </p>
       </header>
-      <div className="glass overflow-x-auto rounded-2xl p-4">
+
+      {/* Desktop: matriz completa con foco fila/columna al hacer click */}
+      <div className="glass hidden overflow-x-auto rounded-2xl p-4 md:block">
         <table className="border-separate border-spacing-1">
           <thead>
             <tr>
               <th />
               {leaders.map((l) => (
-                <th key={l.leader_id} className="pb-1 align-bottom" title={l.leader_name}>
-                  {l.leader_image ? (
-                    <img
-                      src={l.leader_image}
-                      alt={l.leader_name}
-                      className="mx-auto h-12 w-9 rounded-md border border-white/10 object-cover"
-                    />
-                  ) : (
-                    <div className="mx-auto flex h-12 w-9 items-center justify-center rounded-md border border-white/10 bg-black/30">
-                      <Shield size={12} className="text-gray-600" />
-                    </div>
-                  )}
+                <th
+                  key={l.leader_id}
+                  className={`h-20 cursor-pointer pb-1 align-bottom transition-opacity ${
+                    activeId && activeId !== l.leader_id ? "opacity-35" : "opacity-100"
+                  }`}
+                  title={l.leader_name}
+                  onClick={() => toggleActive(l.leader_id)}
+                >
+                  <div className="flex flex-col items-center gap-1">
+                    {l.leader_image ? (
+                      <img
+                        src={l.leader_image}
+                        alt={l.leader_name}
+                        className="mx-auto h-12 w-9 rounded-md border border-white/10 object-cover"
+                      />
+                    ) : (
+                      <div className="mx-auto flex h-12 w-9 items-center justify-center rounded-md border border-white/10 bg-black/30">
+                        <Shield size={12} className="text-gray-600" />
+                      </div>
+                    )}
+                    <span
+                      className="max-h-14 w-3 truncate text-[9px] text-gray-400"
+                      style={{ writingMode: "vertical-rl", transform: "rotate(180deg)" }}
+                    >
+                      {shortLeaderName(l.leader_name)}
+                    </span>
+                  </div>
                 </th>
               ))}
             </tr>
@@ -376,11 +414,22 @@ function MatchupHeatmap({ data }: { data: MatchupData }) {
             {leaders.map((row) => (
               <tr key={row.leader_id}>
                 <th
-                  className="pr-2 text-right text-xs font-semibold text-white whitespace-nowrap"
+                  className={`cursor-pointer pr-2 text-right text-xs font-semibold whitespace-nowrap transition-opacity ${
+                    activeId && activeId !== row.leader_id ? "opacity-35" : "opacity-100"
+                  } ${activeId === row.leader_id ? "text-primary" : "text-white"}`}
                   title={row.leader_name}
+                  onClick={() => toggleActive(row.leader_id)}
                 >
-                  <span className="inline-flex items-center gap-2">
-                    <span className="max-w-[140px] truncate">{row.leader_name}</span>
+                  <span className="inline-flex items-center gap-1.5">
+                    <span className="max-w-[90px] truncate">
+                      {shortLeaderName(row.leader_name)}
+                    </span>
+                    {setBadge(row.card_set_id) && (
+                      <span className="flex-shrink-0 rounded border border-white/10 bg-white/5 px-1 py-0.5 font-mono text-[9px] uppercase tracking-wide text-gray-400">
+                        {setBadge(row.card_set_id)}
+                      </span>
+                    )}
+                    {row.colors && row.colors.length > 0 && <ColorDots colors={row.colors} />}
                     {row.leader_image ? (
                       <img
                         src={row.leader_image}
@@ -391,11 +440,13 @@ function MatchupHeatmap({ data }: { data: MatchupData }) {
                   </span>
                 </th>
                 {leaders.map((col) => {
+                  const dimmed =
+                    !!activeId && activeId !== row.leader_id && activeId !== col.leader_id;
                   if (row.leader_id === col.leader_id) {
                     return (
                       <td
                         key={col.leader_id}
-                        className="h-12 w-14 rounded-md bg-white/[0.03] text-center text-xs text-gray-700"
+                        className={`h-12 w-14 rounded-md bg-white/[0.03] text-center text-xs text-gray-700 transition-opacity ${dimmed ? "opacity-35" : ""}`}
                       >
                         —
                       </td>
@@ -406,7 +457,7 @@ function MatchupHeatmap({ data }: { data: MatchupData }) {
                     return (
                       <td
                         key={col.leader_id}
-                        className="h-12 w-14 rounded-md bg-white/[0.02] text-center text-xs text-gray-700"
+                        className={`h-12 w-14 rounded-md bg-white/[0.02] text-center text-xs text-gray-700 transition-opacity ${dimmed ? "opacity-35" : ""}`}
                         title={`${row.leader_name} vs ${col.leader_name}: sin datos suficientes`}
                       >
                         ·
@@ -416,13 +467,11 @@ function MatchupHeatmap({ data }: { data: MatchupData }) {
                   return (
                     <td
                       key={col.leader_id}
-                      className="h-12 w-14 rounded-md text-center align-middle"
+                      className={`h-12 w-14 rounded-md text-center align-middle transition-opacity ${dimmed ? "opacity-35" : ""}`}
                       style={{ backgroundColor: heatColor(cell.win_rate) }}
                       title={`${row.leader_name} vs ${col.leader_name}: ${cell.win_rate}% (${cell.wins}-${cell.total - cell.wins}, ${cell.total} rondas)`}
                     >
-                      <div className="font-mono text-xs font-bold text-white">
-                        {cell.win_rate}%
-                      </div>
+                      <div className="font-mono text-xs font-bold text-white">{cell.win_rate}%</div>
                       <div className="text-[9px] text-white/60">{cell.total}</div>
                     </td>
                   );
@@ -431,11 +480,75 @@ function MatchupHeatmap({ data }: { data: MatchupData }) {
             ))}
           </tbody>
         </table>
+        <p className="mt-3 text-center text-[11px] text-gray-600">
+          Click en un líder para resaltar su fila y columna · verde: favorable para la fila · rojo:
+          desfavorable · número inferior: rondas del matchup.
+        </p>
       </div>
-      <p className="mt-3 text-center text-[11px] text-gray-600">
-        Celdas verdes: favorable para el líder de la fila · rojas: desfavorable · número inferior:
-        rondas del matchup.
-      </p>
+
+      {/* Mobile: explorador por líder — una fila de la matriz como lista */}
+      <div className="glass rounded-2xl p-4 md:hidden">
+        <label className="mb-2 block text-[10px] uppercase tracking-widest text-gray-500">
+          Líder
+        </label>
+        <BlockSelect
+          value={selectedId || null}
+          onChange={(v) => v && setSelectedId(v)}
+          options={leaders.map((l) => ({
+            value: l.leader_id,
+            label: shortLeaderName(l.leader_name),
+          }))}
+          placeholder="Elegí un líder"
+        />
+        {selectedLeader && (
+          <div className="mt-4 space-y-2">
+            {selectedRow.length === 0 ? (
+              <p className="py-6 text-center text-xs text-gray-500">
+                Sin matchups con datos suficientes para {selectedLeader.leader_name}.
+              </p>
+            ) : (
+              selectedRow.map(({ opp, cell }) => (
+                <div
+                  key={opp.leader_id}
+                  className="flex items-center gap-3 rounded-xl border border-white/10 bg-white/[0.02] p-3"
+                >
+                  {opp.leader_image ? (
+                    <img
+                      src={opp.leader_image}
+                      alt={opp.leader_name}
+                      className="h-12 w-9 flex-shrink-0 rounded-md border border-white/10 object-cover"
+                    />
+                  ) : (
+                    <div className="flex h-12 w-9 flex-shrink-0 items-center justify-center rounded-md border border-white/10 bg-black/30">
+                      <Shield size={12} className="text-gray-600" />
+                    </div>
+                  )}
+                  <div className="min-w-0 flex-1">
+                    <p className="flex items-center gap-1.5 truncate text-sm font-semibold text-white">
+                      <span className="truncate">{shortLeaderName(opp.leader_name)}</span>
+                      {setBadge(opp.card_set_id) && (
+                        <span className="flex-shrink-0 rounded border border-white/10 bg-white/5 px-1 py-0.5 font-mono text-[9px] uppercase tracking-wide text-gray-400">
+                          {setBadge(opp.card_set_id)}
+                        </span>
+                      )}
+                      {opp.colors && opp.colors.length > 0 && <ColorDots colors={opp.colors} />}
+                    </p>
+                    <p className="text-[11px] text-gray-500">
+                      {cell.wins}-{cell.total - cell.wins} · {cell.total} rondas
+                    </p>
+                  </div>
+                  <div
+                    className="rounded-lg px-3 py-1.5 text-right font-mono text-sm font-bold text-white"
+                    style={{ backgroundColor: heatColor(cell.win_rate) }}
+                  >
+                    {cell.win_rate}%
+                  </div>
+                </div>
+              ))
+            )}
+          </div>
+        )}
+      </div>
     </section>
   );
 }

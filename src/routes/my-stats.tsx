@@ -2,12 +2,22 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { AnimatePresence, motion } from "framer-motion";
 import { useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
-import { ArrowLeft, ShieldQuestion, AlertTriangle, BarChart3, HelpCircle, Search, ChevronRight, X } from "lucide-react";
+import {
+  ArrowLeft,
+  ShieldQuestion,
+  AlertTriangle,
+  BarChart3,
+  HelpCircle,
+  Search,
+  ChevronRight,
+  X,
+} from "lucide-react";
 import { useNexusRole } from "@/hooks/use-nexus-role";
 import { getMyStats } from "@/lib/nexus-player.functions";
 import { myStatsGamesQuery, myStatsSourceQuery } from "@/lib/my-stats-queries";
 import { myDashboardQuery } from "@/lib/dashboard-queries";
 import { SkeletonBlock, SkeletonLine } from "@/components/ui/skeleton-loader";
+import { shortLeaderName, setBadge } from "@/lib/leader-display";
 
 export const Route = createFileRoute("/my-stats")({
   head: () => ({ meta: [{ title: "Mis Stats — Nexus" }] }),
@@ -117,7 +127,8 @@ const STAT_TOOLTIPS: Record<string, string> = {
   "2nd Winrate": "Win Rate cuando juegas segundo (oponente tiene turno 1).",
   "WR ganando dado": "Tu win rate en las partidas donde ganaste la tirada de dado inicial.",
   "WR perdiendo dado": "Tu win rate en las partidas donde perdiste la tirada de dado inicial.",
-  "Mejor puesto": "Tu mejor posición final en un torneo, considerando todos tus torneos oficiales de este TCG.",
+  "Mejor puesto":
+    "Tu mejor posición final en un torneo, considerando todos tus torneos oficiales de este TCG.",
   "Top 8 rate": "Porcentaje de torneos donde terminaste en el top 8.",
 };
 
@@ -282,24 +293,6 @@ function ColorDots({ colors }: { colors: string[] }) {
       ))}
     </span>
   );
-}
-
-// Nombre corto para mostrar: nadie dice "Dracule Mihawk" o "Monkey.D.Luffy" completo,
-// todos usan el último nombre ("Mihawk", "Luffy"). Nunca tocamos el dato real, solo el display.
-function shortLeaderName(name: string): string {
-  // Algunos base_name usan comillas en vez de espacios como separador, ej. Eustass"Captain"Kid
-  const parts = name.split(/[\s."'‘’“”]+/).filter(Boolean);
-  return parts.length > 1 ? parts[parts.length - 1] : name;
-}
-
-// set_code normalmente es "EB-02" / "OP-09" (letras-dígitos) y lo mostramos sin guion.
-// Pero algunos releases US son fusiones de dos expansiones, ej. "OP14-EB04" (dos códigos
-// completos separados por guion) — ahí mostramos solo el primero, que es el set real del leader.
-function setBadge(setCode: string | null | undefined): string | null {
-  if (!setCode) return null;
-  const [first, ...rest] = setCode.split("-");
-  if (rest.length > 0 && /\d/.test(first)) return first.toUpperCase();
-  return setCode.replace(/-/g, "").toUpperCase();
 }
 
 function LeaderLabel({
@@ -712,13 +705,23 @@ function mergeStats(official: StatsData, casual: any): StatsData {
       existing.has_uncertain_data = existing.has_uncertain_data || l.has_uncertain_data;
 
       // reset accumulators for recompute
-      const firstWins = Math.round(((existing.first_win_rate ?? 0) / 100) * (existing.first_games - l.first_games)) +
-        Math.round(((l.first_win_rate ?? 0) / 100) * l.first_games);
-      const secondWins = Math.round(((existing.second_win_rate ?? 0) / 100) * (existing.second_games - l.second_games)) +
-        Math.round(((l.second_win_rate ?? 0) / 100) * l.second_games);
+      const firstWins =
+        Math.round(
+          ((existing.first_win_rate ?? 0) / 100) * (existing.first_games - l.first_games),
+        ) + Math.round(((l.first_win_rate ?? 0) / 100) * l.first_games);
+      const secondWins =
+        Math.round(
+          ((existing.second_win_rate ?? 0) / 100) * (existing.second_games - l.second_games),
+        ) + Math.round(((l.second_win_rate ?? 0) / 100) * l.second_games);
 
-      existing.first_win_rate = existing.first_games > 0 ? Math.round((firstWins / existing.first_games) * 1000) / 10 : null;
-      existing.second_win_rate = existing.second_games > 0 ? Math.round((secondWins / existing.second_games) * 1000) / 10 : null;
+      existing.first_win_rate =
+        existing.first_games > 0
+          ? Math.round((firstWins / existing.first_games) * 1000) / 10
+          : null;
+      existing.second_win_rate =
+        existing.second_games > 0
+          ? Math.round((secondWins / existing.second_games) * 1000) / 10
+          : null;
 
       // matchups: merge by opponent_leader_id
       const mMap = new Map(existing.matchups.map((m) => [m.opponent_leader_id, m]));
@@ -734,12 +737,14 @@ function mergeStats(official: StatsData, casual: any): StatsData {
           ex.second_total += m.second_total;
           ex.second_wins += m.second_wins;
           ex.overall_win_rate = ex.total > 0 ? Math.round((ex.wins / ex.total) * 1000) / 10 : 0;
-          ex.first_win_rate = ex.first_total > 0 ? Math.round((ex.first_wins / ex.first_total) * 1000) / 10 : null;
-          ex.second_win_rate = ex.second_total > 0 ? Math.round((ex.second_wins / ex.second_total) * 1000) / 10 : null;
+          ex.first_win_rate =
+            ex.first_total > 0 ? Math.round((ex.first_wins / ex.first_total) * 1000) / 10 : null;
+          ex.second_win_rate =
+            ex.second_total > 0 ? Math.round((ex.second_wins / ex.second_total) * 1000) / 10 : null;
           ex.has_uncertain_data = ex.has_uncertain_data || m.has_uncertain_data;
           (ex as any).round_history = [
             ...((ex as any).round_history ?? []),
-            ...(((m as any).round_history) ?? []),
+            ...((m as any).round_history ?? []),
           ];
         }
       }
@@ -750,12 +755,14 @@ function mergeStats(official: StatsData, casual: any): StatsData {
   add(official.leaders as L[]);
   add((casual?.leaders ?? []) as L[]);
 
-  const leaders = Array.from(map.values()).map((l) => ({
-    ...l,
-    raw_win_rate: l.total_games > 0 ? Math.round((l.wins / l.total_games) * 1000) / 10 : 0,
-    wtd_win_rate: l.total_games > 0 ? Math.round((l.wins / l.total_games) * 1000) / 10 : 0,
-    play_rate: 0,
-  })).sort((a, b) => b.total_games - a.total_games);
+  const leaders = Array.from(map.values())
+    .map((l) => ({
+      ...l,
+      raw_win_rate: l.total_games > 0 ? Math.round((l.wins / l.total_games) * 1000) / 10 : 0,
+      wtd_win_rate: l.total_games > 0 ? Math.round((l.wins / l.total_games) * 1000) / 10 : 0,
+      play_rate: 0,
+    }))
+    .sort((a, b) => b.total_games - a.total_games);
 
   return {
     ...official,
@@ -858,7 +865,9 @@ function StatsPage() {
       )
     : null;
   const overviewWr =
-    overview && overview.games > 0 ? Math.round((overview.wins / overview.games) * 1000) / 10 : null;
+    overview && overview.games > 0
+      ? Math.round((overview.wins / overview.games) * 1000) / 10
+      : null;
 
   const playerAgg = computePlayerAggregates(displayStats);
   const tournamentSummary =
@@ -872,11 +881,11 @@ function StatsPage() {
           m.opponent_leader_name.toLowerCase().includes(matchupSearch.trim().toLowerCase()),
         )
         .sort((a, b) =>
-        matchupSort === "best"
-          ? b.overall_win_rate - a.overall_win_rate
-          : matchupSort === "worst"
-            ? a.overall_win_rate - b.overall_win_rate
-            : b.total - a.total,
+          matchupSort === "best"
+            ? b.overall_win_rate - a.overall_win_rate
+            : matchupSort === "worst"
+              ? a.overall_win_rate - b.overall_win_rate
+              : b.total - a.total,
         )
     : [];
 
@@ -956,9 +965,7 @@ function StatsPage() {
               key={r.key}
               onClick={() => setTimeRange(r.key)}
               className={`flex-shrink-0 rounded-lg px-3 py-1.5 text-xs font-semibold transition ${
-                timeRange === r.key
-                  ? "bg-white/10 text-white"
-                  : "text-gray-500 hover:text-white"
+                timeRange === r.key ? "bg-white/10 text-white" : "text-gray-500 hover:text-white"
               }`}
             >
               {r.label}
@@ -1025,7 +1032,6 @@ function StatsPage() {
                         : "Sin rondas registradas para este TCG todavía."}
               </p>
             </div>
-
           ) : (
             <>
               {/* Resumen global del dataset */}
@@ -1094,17 +1100,29 @@ function StatsPage() {
                     {playerAgg && (
                       <StatCard
                         label="WR ganando dado"
-                        value={playerAgg.dieRollWinRate != null ? `${playerAgg.dieRollWinRate}%` : "—"}
-                        sub={playerAgg.dieRollGames > 0 ? `${playerAgg.dieRollGames} partidas` : "Sin datos"}
+                        value={
+                          playerAgg.dieRollWinRate != null ? `${playerAgg.dieRollWinRate}%` : "—"
+                        }
+                        sub={
+                          playerAgg.dieRollGames > 0
+                            ? `${playerAgg.dieRollGames} partidas`
+                            : "Sin datos"
+                        }
                       />
                     )}
                     {playerAgg && (
                       <StatCard
                         label="WR perdiendo dado"
                         value={
-                          playerAgg.noDieRollWinRate != null ? `${playerAgg.noDieRollWinRate}%` : "—"
+                          playerAgg.noDieRollWinRate != null
+                            ? `${playerAgg.noDieRollWinRate}%`
+                            : "—"
                         }
-                        sub={playerAgg.noDieRollGames > 0 ? `${playerAgg.noDieRollGames} partidas` : "Sin datos"}
+                        sub={
+                          playerAgg.noDieRollGames > 0
+                            ? `${playerAgg.noDieRollGames} partidas`
+                            : "Sin datos"
+                        }
                       />
                     )}
                     {tournamentSummary && (
@@ -1159,292 +1177,291 @@ function StatsPage() {
                   </div>
                 </div>
 
-              {/* Main — stats del leader seleccionado */}
-              {selectedLeader && (
-                <div className="min-w-0 space-y-6">
-                  {/* Hero del leader */}
-                  <div className="glass rounded-2xl p-6">
-                    <div className="flex items-start gap-6">
-                      {selectedLeader.leader_image ? (
-                        <img
-                          src={selectedLeader.leader_image}
-                          alt={selectedLeader.leader_name}
-                          className="h-32 w-auto flex-shrink-0 rounded-xl border border-white/10 object-cover shadow-2xl"
+                {/* Main — stats del leader seleccionado */}
+                {selectedLeader && (
+                  <div className="min-w-0 space-y-6">
+                    {/* Hero del leader */}
+                    <div className="glass rounded-2xl p-6">
+                      <div className="flex items-start gap-6">
+                        {selectedLeader.leader_image ? (
+                          <img
+                            src={selectedLeader.leader_image}
+                            alt={selectedLeader.leader_name}
+                            className="h-32 w-auto flex-shrink-0 rounded-xl border border-white/10 object-cover shadow-2xl"
+                          />
+                        ) : (
+                          <div className="flex h-32 w-24 flex-shrink-0 items-center justify-center rounded-xl border border-white/10 bg-black/40">
+                            <div className="text-center">
+                              <ShieldQuestion size={24} className="mx-auto mb-1 text-gray-600" />
+                              <p className="text-[9px] text-gray-600">Imagen próximamente</p>
+                            </div>
+                          </div>
+                        )}
+
+                        <div className="min-w-0 flex-1">
+                          <div className="flex items-start gap-2 flex-wrap">
+                            <LeaderLabel
+                              name={selectedLeader.leader_name}
+                              setCode={selectedLeader.leader_set_code}
+                              colors={selectedLeader.leader_colors}
+                              className="text-xl font-bold text-white"
+                            />
+                            {selectedLeader.has_uncertain_data && <UncertainBadge />}
+                          </div>
+                          <p className="mt-1 text-xs text-gray-500">
+                            {displayStats.game_name} · {selectedLeader.total_games} partidas
+                            {timeRange !== "all" ? ` · últimos ${timeRange} días` : ""}
+                          </p>
+
+                          {/* Dato estrella: el WR de este leader, grande */}
+                          <div className="mt-3 flex items-baseline gap-3">
+                            <p
+                              className={`font-mono text-4xl font-bold ${wrColorClass(selectedLeader.raw_win_rate)}`}
+                            >
+                              {selectedLeader.raw_win_rate}%
+                            </p>
+                            <p className="font-mono text-sm text-gray-400">
+                              {selectedLeader.wins}W<span className="text-gray-600"> — </span>
+                              {selectedLeader.losses}L
+                            </p>
+                          </div>
+
+                          {selectedLeader.has_uncertain_data && (
+                            <p className="mt-2 text-[11px] text-amber-400/80">
+                              ⚠ Algunas rondas fueron reportadas por tu oponente y aún no están
+                              confirmadas. Los porcentajes pueden variar.
+                            </p>
+                          )}
+                        </div>
+                      </div>
+
+                      {/* Stats grid */}
+                      <div className="mt-5 grid grid-cols-2 gap-3 sm:grid-cols-3">
+                        <StatCard label="Total Games" value={`${selectedLeader.total_games}`} />
+                        <StatCard
+                          label="WR Confirmado"
+                          value={`${selectedLeader.wtd_win_rate}%`}
+                          sub="Solo rondas confirmadas"
                         />
-                      ) : (
-                        <div className="flex h-32 w-24 flex-shrink-0 items-center justify-center rounded-xl border border-white/10 bg-black/40">
-                          <div className="text-center">
-                            <ShieldQuestion size={24} className="mx-auto mb-1 text-gray-600" />
-                            <p className="text-[9px] text-gray-600">Imagen próximamente</p>
+                        <StatCard
+                          label="WR Total"
+                          value={`${selectedLeader.raw_win_rate}%`}
+                          sub="Todas las rondas"
+                        />
+                        {statsSource === "official" && timeRange === "all" && (
+                          <StatCard
+                            label="Play Rate"
+                            value={`${selectedLeader.play_rate}%`}
+                            sub="Del total de rondas en el meta"
+                          />
+                        )}
+                        <StatCard
+                          label="1st Winrate"
+                          value={
+                            selectedLeader.first_win_rate != null
+                              ? `${selectedLeader.first_win_rate}%`
+                              : "—"
+                          }
+                          sub={
+                            selectedLeader.first_games > 0
+                              ? `${selectedLeader.first_games} partidas`
+                              : "Sin datos"
+                          }
+                        />
+                        <StatCard
+                          label="2nd Winrate"
+                          value={
+                            selectedLeader.second_win_rate != null
+                              ? `${selectedLeader.second_win_rate}%`
+                              : "—"
+                          }
+                          sub={
+                            selectedLeader.second_games > 0
+                              ? `${selectedLeader.second_games} partidas`
+                              : "Sin datos"
+                          }
+                        />
+                      </div>
+                    </div>
+
+                    {/* Matchup Breakdown */}
+                    <div className="glass rounded-2xl p-4 sm:p-6">
+                      <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
+                        <h3 className="flex items-center gap-2 text-sm font-bold uppercase tracking-wider text-white">
+                          <span className="text-primary">⚔</span> Matchups
+                        </h3>
+                        {selectedLeader.matchups.length > 1 && (
+                          <div className="inline-flex gap-1 rounded-lg border border-white/10 bg-white/[0.03] p-0.5">
+                            {(
+                              [
+                                { key: "games", label: "Más jugados" },
+                                { key: "best", label: "Mejores" },
+                                { key: "worst", label: "Peores" },
+                              ] as const
+                            ).map((s) => (
+                              <button
+                                key={s.key}
+                                onClick={() => setMatchupSort(s.key)}
+                                className={`rounded-md px-2.5 py-1 text-[11px] font-semibold transition ${
+                                  matchupSort === s.key
+                                    ? "bg-primary/20 text-primary"
+                                    : "text-gray-500 hover:text-white"
+                                }`}
+                              >
+                                {s.label}
+                              </button>
+                            ))}
+                          </div>
+                        )}
+                      </div>
+
+                      {matchupBuckets && selectedLeader.matchups.length > 0 && (
+                        <div className="mb-4 grid grid-cols-3 gap-2">
+                          <div className="rounded-xl border border-emerald-500/20 bg-emerald-500/5 px-3 py-2 text-center">
+                            <p className="font-mono text-lg font-bold text-emerald-400">
+                              {matchupBuckets.favored}
+                            </p>
+                            <p className="text-[10px] uppercase tracking-wider text-gray-500">
+                              Favorable
+                            </p>
+                          </div>
+                          <div className="rounded-xl border border-white/10 bg-white/[0.03] px-3 py-2 text-center">
+                            <p className="font-mono text-lg font-bold text-white">
+                              {matchupBuckets.even}
+                            </p>
+                            <p className="text-[10px] uppercase tracking-wider text-gray-500">
+                              Parejo
+                            </p>
+                          </div>
+                          <div className="rounded-xl border border-red-500/20 bg-red-500/5 px-3 py-2 text-center">
+                            <p className="font-mono text-lg font-bold text-red-400">
+                              {matchupBuckets.unfavored}
+                            </p>
+                            <p className="text-[10px] uppercase tracking-wider text-gray-500">
+                              Desfavorable
+                            </p>
                           </div>
                         </div>
                       )}
 
-                      <div className="min-w-0 flex-1">
-                        <div className="flex items-start gap-2 flex-wrap">
-                          <LeaderLabel
-                            name={selectedLeader.leader_name}
-                            setCode={selectedLeader.leader_set_code}
-                            colors={selectedLeader.leader_colors}
-                            className="text-xl font-bold text-white"
+                      {selectedLeader.matchups.length > 3 && (
+                        <div className="relative mb-3">
+                          <Search
+                            size={14}
+                            className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-gray-600"
                           />
-                          {selectedLeader.has_uncertain_data && <UncertainBadge />}
+                          <input
+                            type="search"
+                            value={matchupSearch}
+                            onChange={(e) => setMatchupSearch(e.target.value)}
+                            placeholder="Buscar leader oponente…"
+                            className="w-full rounded-xl border border-white/10 bg-white/[0.03] py-2 pl-9 pr-3 text-sm text-white placeholder:text-gray-600 focus:border-primary/50 focus:outline-none"
+                          />
                         </div>
-                        <p className="mt-1 text-xs text-gray-500">
-                          {displayStats.game_name} · {selectedLeader.total_games} partidas
-                          {timeRange !== "all" ? ` · últimos ${timeRange} días` : ""}
+                      )}
+
+                      {selectedLeader.matchups.length === 0 ? (
+                        <p className="py-8 text-center text-sm text-gray-500">
+                          Aún no tienes matchups registrados con este leader.
                         </p>
-
-                        {/* Dato estrella: el WR de este leader, grande */}
-                        <div className="mt-3 flex items-baseline gap-3">
-                          <p
-                            className={`font-mono text-4xl font-bold ${wrColorClass(selectedLeader.raw_win_rate)}`}
-                          >
-                            {selectedLeader.raw_win_rate}%
-                          </p>
-                          <p className="font-mono text-sm text-gray-400">
-                            {selectedLeader.wins}W
-                            <span className="text-gray-600"> — </span>
-                            {selectedLeader.losses}L
-                          </p>
-                        </div>
-
-                        {selectedLeader.has_uncertain_data && (
-                          <p className="mt-2 text-[11px] text-amber-400/80">
-                            ⚠ Algunas rondas fueron reportadas por tu oponente y aún no están
-                            confirmadas. Los porcentajes pueden variar.
-                          </p>
-                        )}
-                      </div>
-                    </div>
-
-                    {/* Stats grid */}
-                    <div className="mt-5 grid grid-cols-2 gap-3 sm:grid-cols-3">
-                      <StatCard label="Total Games" value={`${selectedLeader.total_games}`} />
-                      <StatCard
-                        label="WR Confirmado"
-                        value={`${selectedLeader.wtd_win_rate}%`}
-                        sub="Solo rondas confirmadas"
-                      />
-                      <StatCard
-                        label="WR Total"
-                        value={`${selectedLeader.raw_win_rate}%`}
-                        sub="Todas las rondas"
-                      />
-                      {statsSource === "official" && timeRange === "all" && (
-                        <StatCard
-                          label="Play Rate"
-                          value={`${selectedLeader.play_rate}%`}
-                          sub="Del total de rondas en el meta"
-                        />
-                      )}
-                      <StatCard
-                        label="1st Winrate"
-                        value={
-                          selectedLeader.first_win_rate != null
-                            ? `${selectedLeader.first_win_rate}%`
-                            : "—"
-                        }
-                        sub={
-                          selectedLeader.first_games > 0
-                            ? `${selectedLeader.first_games} partidas`
-                            : "Sin datos"
-                        }
-                      />
-                      <StatCard
-                        label="2nd Winrate"
-                        value={
-                          selectedLeader.second_win_rate != null
-                            ? `${selectedLeader.second_win_rate}%`
-                            : "—"
-                        }
-                        sub={
-                          selectedLeader.second_games > 0
-                            ? `${selectedLeader.second_games} partidas`
-                            : "Sin datos"
-                        }
-                      />
-                    </div>
-                  </div>
-
-                  {/* Matchup Breakdown */}
-                  <div className="glass rounded-2xl p-4 sm:p-6">
-                    <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
-                      <h3 className="flex items-center gap-2 text-sm font-bold uppercase tracking-wider text-white">
-                        <span className="text-primary">⚔</span> Matchups
-                      </h3>
-                      {selectedLeader.matchups.length > 1 && (
-                        <div className="inline-flex gap-1 rounded-lg border border-white/10 bg-white/[0.03] p-0.5">
-                          {(
-                            [
-                              { key: "games", label: "Más jugados" },
-                              { key: "best", label: "Mejores" },
-                              { key: "worst", label: "Peores" },
-                            ] as const
-                          ).map((s) => (
-                            <button
-                              key={s.key}
-                              onClick={() => setMatchupSort(s.key)}
-                              className={`rounded-md px-2.5 py-1 text-[11px] font-semibold transition ${
-                                matchupSort === s.key
-                                  ? "bg-primary/20 text-primary"
-                                  : "text-gray-500 hover:text-white"
-                              }`}
-                            >
-                              {s.label}
-                            </button>
-                          ))}
-                        </div>
-                      )}
-                    </div>
-
-                    {matchupBuckets && selectedLeader.matchups.length > 0 && (
-                      <div className="mb-4 grid grid-cols-3 gap-2">
-                        <div className="rounded-xl border border-emerald-500/20 bg-emerald-500/5 px-3 py-2 text-center">
-                          <p className="font-mono text-lg font-bold text-emerald-400">
-                            {matchupBuckets.favored}
-                          </p>
-                          <p className="text-[10px] uppercase tracking-wider text-gray-500">
-                            Favorable
-                          </p>
-                        </div>
-                        <div className="rounded-xl border border-white/10 bg-white/[0.03] px-3 py-2 text-center">
-                          <p className="font-mono text-lg font-bold text-white">
-                            {matchupBuckets.even}
-                          </p>
-                          <p className="text-[10px] uppercase tracking-wider text-gray-500">
-                            Parejo
-                          </p>
-                        </div>
-                        <div className="rounded-xl border border-red-500/20 bg-red-500/5 px-3 py-2 text-center">
-                          <p className="font-mono text-lg font-bold text-red-400">
-                            {matchupBuckets.unfavored}
-                          </p>
-                          <p className="text-[10px] uppercase tracking-wider text-gray-500">
-                            Desfavorable
-                          </p>
-                        </div>
-                      </div>
-                    )}
-
-                    {selectedLeader.matchups.length > 3 && (
-                      <div className="relative mb-3">
-                        <Search
-                          size={14}
-                          className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-gray-600"
-                        />
-                        <input
-                          type="search"
-                          value={matchupSearch}
-                          onChange={(e) => setMatchupSearch(e.target.value)}
-                          placeholder="Buscar leader oponente…"
-                          className="w-full rounded-xl border border-white/10 bg-white/[0.03] py-2 pl-9 pr-3 text-sm text-white placeholder:text-gray-600 focus:border-primary/50 focus:outline-none"
-                        />
-                      </div>
-                    )}
-
-                    {selectedLeader.matchups.length === 0 ? (
-                      <p className="py-8 text-center text-sm text-gray-500">
-                        Aún no tienes matchups registrados con este leader.
-                      </p>
-                    ) : sortedMatchups.length === 0 ? (
-                      <p className="py-8 text-center text-sm text-gray-500">
-                        Sin matchups que coincidan con "{matchupSearch}".
-                      </p>
-                    ) : (
-                      <div
-                        key={`${selectedLeaderIdx}-${matchupSort}`}
-                        className="grid gap-2.5"
-                        style={{ gridTemplateColumns: "repeat(auto-fill, minmax(104px, 1fr))" }}
-                      >
-                        {sortedMatchups.map((m) => {
-                          const lowOverall = m.total < LOW_SAMPLE;
-                          const lowFirst = m.first_total < LOW_SAMPLE;
-                          const lowSecond = m.second_total < LOW_SAMPLE;
-                          const bucketBorder =
-                            m.overall_win_rate >= 55
-                              ? "border-t-emerald-400"
-                              : m.overall_win_rate >= 45
-                                ? "border-t-white/30"
-                                : "border-t-red-400";
-                          return (
-                            <button
-                              key={m.opponent_leader_id}
-                              onClick={() => setVsLeaderId(m.opponent_leader_id)}
-                              className={`rounded-b-lg rounded-t-sm border-t-2 ${bucketBorder} bg-white/[0.02] p-2 text-left transition hover:bg-white/5`}
-                            >
-                              {m.opponent_leader_image ? (
-                                <img
-                                  src={m.opponent_leader_image}
-                                  alt={m.opponent_leader_name}
-                                  className="mx-auto h-24 w-auto rounded-md border border-white/10 object-cover"
+                      ) : sortedMatchups.length === 0 ? (
+                        <p className="py-8 text-center text-sm text-gray-500">
+                          Sin matchups que coincidan con "{matchupSearch}".
+                        </p>
+                      ) : (
+                        <div
+                          key={`${selectedLeaderIdx}-${matchupSort}`}
+                          className="grid gap-2.5"
+                          style={{ gridTemplateColumns: "repeat(auto-fill, minmax(104px, 1fr))" }}
+                        >
+                          {sortedMatchups.map((m) => {
+                            const lowOverall = m.total < LOW_SAMPLE;
+                            const lowFirst = m.first_total < LOW_SAMPLE;
+                            const lowSecond = m.second_total < LOW_SAMPLE;
+                            const bucketBorder =
+                              m.overall_win_rate >= 55
+                                ? "border-t-emerald-400"
+                                : m.overall_win_rate >= 45
+                                  ? "border-t-white/30"
+                                  : "border-t-red-400";
+                            return (
+                              <button
+                                key={m.opponent_leader_id}
+                                onClick={() => setVsLeaderId(m.opponent_leader_id)}
+                                className={`rounded-b-lg rounded-t-sm border-t-2 ${bucketBorder} bg-white/[0.02] p-2 text-left transition hover:bg-white/5`}
+                              >
+                                {m.opponent_leader_image ? (
+                                  <img
+                                    src={m.opponent_leader_image}
+                                    alt={m.opponent_leader_name}
+                                    className="mx-auto h-24 w-auto rounded-md border border-white/10 object-cover"
+                                  />
+                                ) : (
+                                  <div className="mx-auto flex h-24 w-16 items-center justify-center rounded-md border border-white/10 bg-black/30">
+                                    <ShieldQuestion size={18} className="text-gray-600" />
+                                  </div>
+                                )}
+                                <LeaderLabel
+                                  name={m.opponent_leader_name}
+                                  setCode={m.opponent_leader_set_code}
+                                  className="mt-1.5 justify-center text-center text-xs font-semibold text-white"
                                 />
-                              ) : (
-                                <div className="mx-auto flex h-24 w-16 items-center justify-center rounded-md border border-white/10 bg-black/30">
-                                  <ShieldQuestion size={18} className="text-gray-600" />
-                                </div>
-                              )}
-                              <LeaderLabel
-                                name={m.opponent_leader_name}
-                                setCode={m.opponent_leader_set_code}
-                                className="mt-1.5 justify-center text-center text-xs font-semibold text-white"
-                              />
 
-                              <div className="mt-2 space-y-1 border-t border-white/5 pt-1.5">
-                                <div className="flex items-center justify-between">
-                                  <span className="text-[10px] text-gray-500">WR</span>
-                                  <span className="font-mono text-xs">
-                                    <span
-                                      className={`font-bold ${wrColorClass(m.overall_win_rate, lowOverall)}`}
-                                    >
-                                      {m.overall_win_rate}%
-                                    </span>{" "}
-                                    <span className="text-[10px] text-gray-600">{m.total}p</span>
-                                  </span>
-                                </div>
-                                <div className="flex items-center justify-between">
-                                  <span className="text-[10px] text-gray-500">1st</span>
-                                  <span className="font-mono text-xs">
-                                    <span
-                                      className={`font-bold ${
-                                        m.first_win_rate != null
-                                          ? wrColorClass(m.first_win_rate, lowFirst)
-                                          : "text-gray-600"
-                                      }`}
-                                    >
-                                      {m.first_win_rate != null ? `${m.first_win_rate}%` : "—"}
-                                    </span>{" "}
-                                    <span className="text-[10px] text-gray-600">
-                                      {m.first_total}p
+                                <div className="mt-2 space-y-1 border-t border-white/5 pt-1.5">
+                                  <div className="flex items-center justify-between">
+                                    <span className="text-[10px] text-gray-500">WR</span>
+                                    <span className="font-mono text-xs">
+                                      <span
+                                        className={`font-bold ${wrColorClass(m.overall_win_rate, lowOverall)}`}
+                                      >
+                                        {m.overall_win_rate}%
+                                      </span>{" "}
+                                      <span className="text-[10px] text-gray-600">{m.total}p</span>
                                     </span>
-                                  </span>
-                                </div>
-                                <div className="flex items-center justify-between">
-                                  <span className="text-[10px] text-gray-500">2nd</span>
-                                  <span className="font-mono text-xs">
-                                    <span
-                                      className={`font-bold ${
-                                        m.second_win_rate != null
-                                          ? wrColorClass(m.second_win_rate, lowSecond)
-                                          : "text-gray-600"
-                                      }`}
-                                    >
-                                      {m.second_win_rate != null ? `${m.second_win_rate}%` : "—"}
-                                    </span>{" "}
-                                    <span className="text-[10px] text-gray-600">
-                                      {m.second_total}p
+                                  </div>
+                                  <div className="flex items-center justify-between">
+                                    <span className="text-[10px] text-gray-500">1st</span>
+                                    <span className="font-mono text-xs">
+                                      <span
+                                        className={`font-bold ${
+                                          m.first_win_rate != null
+                                            ? wrColorClass(m.first_win_rate, lowFirst)
+                                            : "text-gray-600"
+                                        }`}
+                                      >
+                                        {m.first_win_rate != null ? `${m.first_win_rate}%` : "—"}
+                                      </span>{" "}
+                                      <span className="text-[10px] text-gray-600">
+                                        {m.first_total}p
+                                      </span>
                                     </span>
-                                  </span>
+                                  </div>
+                                  <div className="flex items-center justify-between">
+                                    <span className="text-[10px] text-gray-500">2nd</span>
+                                    <span className="font-mono text-xs">
+                                      <span
+                                        className={`font-bold ${
+                                          m.second_win_rate != null
+                                            ? wrColorClass(m.second_win_rate, lowSecond)
+                                            : "text-gray-600"
+                                        }`}
+                                      >
+                                        {m.second_win_rate != null ? `${m.second_win_rate}%` : "—"}
+                                      </span>{" "}
+                                      <span className="text-[10px] text-gray-600">
+                                        {m.second_total}p
+                                      </span>
+                                    </span>
+                                  </div>
                                 </div>
-                              </div>
-                            </button>
-                          );
-                        })}
-                      </div>
-                    )}
+                              </button>
+                            );
+                          })}
+                        </div>
+                      )}
+                    </div>
                   </div>
-                </div>
-              )}
+                )}
               </div>
             </>
           )}
